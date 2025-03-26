@@ -1,13 +1,13 @@
-import Footer from "./components/Footer/page";
-import Header from "./components/Header/page";
+import Footer from "@/app/components/Footer/page";
+import Header from "@/app/components/Header/page";
 
-export default function Home() {
+export default function Entradas() {
   return (
     <>
     <Header></Header>
     <div className="container mx-auto">
       <h1 className="text-4xl font-bold text-center">Burgerlivery</h1>
-      <p className="text-center ">Faça seu pedido online</p>
+      <p className="text-center">Entradas</p>
     </div>
     <Footer></Footer>
     </>
