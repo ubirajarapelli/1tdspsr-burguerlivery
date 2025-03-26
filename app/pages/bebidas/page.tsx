@@ -7,7 +7,7 @@ export default function Bebidas() {
         <Header />
         <main className="flex-grow p-4 md:p-8 text-center">
           <h2 className="text-xl sm:text-2xl md:text-3xl font-bold">
-            Bebidas
+            Bebidas2
           </h2>
         </main>
         <Footer />
