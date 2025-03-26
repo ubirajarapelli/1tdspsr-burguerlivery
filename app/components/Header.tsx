@@ -11,16 +11,16 @@ export default function Header() {
           <a className="text-4xl ml-4">Burguerdelivery</a>
 
           <nav className="mt-4 flex flex-row gap-4 mr-14 ml-auto space-y-2">
-            <Link href="/hamburguers" legacyBehavior>
-              <a className="hover:text-black">Hamburgueres</a>
+            <Link href="/pages/hamburgues" legacyBehavior>
+              <a className="hover:text-black">Hamburgues</a>
             </Link>
-            <Link href="/entrada" legacyBehavior>
+            <Link href="/pages/entradas" legacyBehavior>
               <a className="hover:text-black">Entrada</a>
             </Link>
-            <Link href="/sobremesas" legacyBehavior>
+            <Link href="/pages/sobremesas" legacyBehavior>
               <a className="hover:text-black">Sobremesas</a>
             </Link>
-            <Link href="/bebidas" legacyBehavior>
+            <Link href="/pages/bebidas" legacyBehavior>
               <a className="hover:text-black">Bebidas</a>
             </Link>
           </nav>
