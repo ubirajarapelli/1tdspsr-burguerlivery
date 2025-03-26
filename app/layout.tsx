@@ -1,34 +1,21 @@
-import type { Metadata } from "next"
-import { Geist, Geist_Mono } from "next/font/google"
-import "./styles/globals.css"
+import "./styles/globals.css";
+import Header from "./components/Header/Header";
+import Footer from "./components/Footer/Footer";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-})
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-})
-
-export const metadata: Metadata = {
-  title: "Burgerlivery",
-  description: "Burgerlivery faça seu pedido online",
-}
-
-export default function RootLayout({
+export default function Layout({
   children,
-}: Readonly<{
-  children: React.ReactNode
-}>) {
+}: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
-        {children}
+    <html lang="pt-BR">
+      <head>
+        <title>BurgerLivery</title>
+        <link rel="icon" type="image/png" href="/favicon.png" />
+      </head>
+      <body>
+        <Header />
+        <main className="h-[84vh] content-center">{children}</main>
+        <Footer />
       </body>
     </html>
-  )
+  );
 }
