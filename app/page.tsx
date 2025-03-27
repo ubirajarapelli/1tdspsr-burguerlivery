@@ -1,8 +1,31 @@
+import { Snail } from "lucide-react"
+import Link from "next/link"
+
 export default function Home() {
   return (
-    <div className="container mx-auto">
-      <h1 className="text-4xl font-bold text-center">Burgerlivery</h1>
-      <p className="text-center">Faça seu pedido online</p>
-    </div>
+    <main className="bg-gray-200 h-svh">
+      <div className="container mx-auto">
+        <header className="py-3">
+          <a href="" className="flex items-center gap-1">
+            <Snail className="text-amber-400" />
+            <span className="text-gray-700 font-bold text-xl">
+              Burguerlivery
+            </span>
+          </a>
+        </header>
+        <section className="flex flex-col justify-center items-center h-[600px] gap-2">
+          <h1 className="text-4xl font-bold text-center text-gray-700">
+            Burgerlivery
+          </h1>
+          <p className="text-center text-gray-700">Faça seu pedido online</p>
+          <Link
+            href="/pages/hamburgers"
+            className="min-w-32 py-2 px-6 rounded-full bg-amber-300 text-amber-600 text-center font-semibold border border-amber-400"
+          >
+            Inciar
+          </Link>
+        </section>
+      </div>
+    </main>
   )
 }
