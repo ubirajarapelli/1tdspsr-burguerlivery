@@ -19,7 +19,7 @@ export default function Home() {
           </h1>
           <p className="text-center text-gray-700">Faça seu pedido online</p>
           <Link
-            href="/pages/hamburgers"
+            href="/hamburgers"
             className="min-w-32 py-2 px-6 rounded-full bg-amber-300 text-amber-600 text-center font-semibold border border-amber-400"
           >
             Inciar

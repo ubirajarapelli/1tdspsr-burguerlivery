@@ -1,7 +1,14 @@
-import { Snail } from "lucide-react"
 import Link from "next/link"
+import { Snail } from "lucide-react"
+import { CategoryItem } from "@/app/types/categories"
 
-export const Header = () => {
+export async function Header() {
+  const baseUrl = "https://burgerlivery-api.vercel.app"
+
+  const response = await fetch(`${baseUrl}/categories`)
+  const data = await response.json()
+  const categories = data.filter((item: CategoryItem) => item.link !== "combos")
+
   return (
     <header>
       <div className="container mx-auto flex justify-between items-center py-3">
@@ -15,18 +22,15 @@ export const Header = () => {
         </div>
         <nav>
           <ul className="py-3">
-            <li className="inline px-2 font-medium text-gray-700 hover:text-amber-600">
-              <Link href="/pages/entradas">Entradas</Link>
-            </li>
-            <li className="inline px-2 font-medium text-gray-700 hover:text-amber-600">
-              <Link href="/pages/hamburgers">Burgers</Link>
-            </li>
-            <li className="inline px-2 font-medium text-gray-700 hover:text-amber-600">
-              <Link href="/pages/bebidas">Bebidas</Link>
-            </li>
-            <li className="inline px-2 font-medium text-gray-700 hover:text-amber-600">
-              <Link href="/pages/sobremesas">Sobremesas</Link>
-            </li>
+            {categories.map((category: CategoryItem) => (
+              <li
+                key={category.id}
+                className="inline px-2 font-medium text-gray-700 hover:text-amber-600"
+              >
+                <Link href={`/${category.link}`}>{category.text}</Link>
+              </li>
+            ))}
+
             <li className="inline px-2 font-medium text-gray-700 hover:text-amber-600">
               <Link
                 href=""
