@@ -1,5 +1,5 @@
-import { Snail } from "lucide-react"
 import Link from "next/link"
+import { Logo } from "./components"
 
 export default function Home() {
   return (
@@ -7,10 +7,7 @@ export default function Home() {
       <div className="container mx-auto">
         <header className="py-3">
           <a href="" className="flex items-center gap-1">
-            <Snail className="text-amber-400" />
-            <span className="text-gray-700 font-bold text-xl">
-              Burguerlivery
-            </span>
+            <Logo />
           </a>
         </header>
         <section className="flex flex-col justify-center items-center h-[600px] gap-2">
