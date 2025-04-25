@@ -14,7 +14,6 @@ export const ProductCard = ({ children }: ProductCardProps) => {
 interface ProductCardHeaderProps {
   children: React.ReactNode
 }
-
 export const ProductCardHeader = ({ children }: ProductCardHeaderProps) => {
   return <div className="mb-4">{children}</div>
 }
@@ -25,7 +24,6 @@ interface ProductCardImageProps {
   width: number
   height: number
 }
-
 export const ProductCardImage = ({
   src,
   alt,
@@ -46,7 +44,6 @@ export const ProductCardImage = ({
 interface ProductCardTitleProps {
   children: React.ReactNode
 }
-
 export const ProductCardTitle = ({ children }: ProductCardTitleProps) => {
   return <h2 className="text-xl text-gray-700 font-bold mb-2">{children}</h2>
 }
@@ -63,7 +60,6 @@ export const ProductCardDescription = ({
 interface ProductCardActionProps {
   children: React.ReactNode
 }
-
 export const ProductCardAction = ({ children }: ProductCardActionProps) => {
   return <div className="flex flex-col gap-2">{children}</div>
 }

@@ -26,12 +26,28 @@ export default function Appetizers() {
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = event.target
-
     setProductValue(Number(value))
   }
 
   const handleClick = (id: number) => {
-    console.log("ID do produto:", id)
+    if (productValue === 0) {
+      // alert("Selecione um valor")
+      return
+    }
+
+    const selectedApperizer = appetizers.find(
+      (appetizer) => appetizer.id === id
+    )
+
+    const sendToCart = {
+      id: selectedApperizer?.id,
+      title: selectedApperizer?.title,
+      image: selectedApperizer?.image,
+      value: productValue,
+    }
+
+    setAppetizerOrder([...appetizerOrder, sendToCart])
+    setProductValue(0)
   }
 
   const getAppetizers = async () => {
@@ -92,22 +108,6 @@ export default function Appetizers() {
                   onChange={handleChange}
                   value={appetizer.values.small}
                 />
-                // <div className="flex flex-row-reverse items-center justify-between p-2 bg-gray-100 rounded-lg mb-4 text-gray-700">
-                //   <input
-                //     type="radio"
-                //     id=
-                //     name={appetizer.id}
-                //     value={appetizer.values.small}
-                //     onChange={handleChange}
-                //     className="h-4 w-4 text-amber-600 focus:ring-amber-600 border-amber-400"
-                //   />
-                //   <label
-                //     htmlFor={`${appetizer.id}-${appetizer.values.small}`}
-                //     className="w-full text-sm cursor-pointer"
-                //   >
-                //     {formatCurrency(appetizer.values.small)}
-                //   </label>
-                // </div>
               )}
               <FormButton onClick={() => handleClick(appetizer.id)}>
                 Adicionar

@@ -1,5 +1,5 @@
 "use client"
-import { createContext, useState } from "react"
+import { createContext, useEffect, useState } from "react"
 
 interface OrderProviderProps {
   children: React.ReactNode
@@ -13,6 +13,12 @@ export const OrderProvider = ({ children }: OrderProviderProps) => {
   const [appetizerOrder, setAppetizerOrder] = useState<number[]>([])
   const [hamburgerOrder, setHamburgerOrder] = useState<number[]>([])
 
+  const [totalItems, setSetTotalItems] = useState<number>(0)
+
+  useEffect(() => {
+    setSetTotalItems(appetizerOrder.length)
+  }, [appetizerOrder])
+
   return (
     <OrderContext.Provider
       value={{
@@ -20,6 +26,8 @@ export const OrderProvider = ({ children }: OrderProviderProps) => {
         setAppetizerOrder,
         hamburgerOrder,
         setHamburgerOrder,
+        totalItems,
+        setSetTotalItems,
       }}
     >
       {children}

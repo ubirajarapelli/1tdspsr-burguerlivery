@@ -3,11 +3,15 @@ import { useRouter } from "next/navigation"
 import Link from "next/link"
 import { Logo } from "../logo/Logo"
 import { MenuItem } from "../menuItem/Menuitem"
+import OrderContext from "@/app/context/orderContext"
+import { useContext } from "react"
 
 export const Header = () => {
   const router = useRouter()
   const userToken = sessionStorage.getItem("token")
   const userData = JSON.parse(sessionStorage.getItem("user"))
+
+  const { totalItems } = useContext<unknown>(OrderContext)
 
   const handleLogout = () => {
     sessionStorage.removeItem("token")
@@ -29,7 +33,6 @@ export const Header = () => {
             <MenuItem link="/pages/hamburgers">Burgers</MenuItem>
             <MenuItem link="/pages/bebidas">Bebidas</MenuItem>
             <MenuItem link="/pages/sobremesas">Sobremesas</MenuItem>
-
             {userToken ? (
               <>
                 Olá: {userData.name} |{" "}
@@ -47,6 +50,7 @@ export const Header = () => {
                 </Link>
               </li>
             )}
+            <MenuItem link="">{totalItems}</MenuItem>
           </ul>
         </nav>
       </div>
