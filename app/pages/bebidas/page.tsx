@@ -28,25 +28,25 @@ export default function Beverages() {
     setProductValue(Number(value))
   }
 
-    const handleClick = (id: number) => {
-        if (productValue === 0) {
-        return
-        }
-
-        const selectedBeverage = beverages.find(
-        (beverage) => beverage.id === id
-        )
-
-        const sendToCart = {
-        id: selectedBeverage?.id,
-        title: selectedBeverage?.title,
-        image: selectedBeverage?.image,
-        value: productValue,
-        }
-
-        setBeverageOrder([...beverageOrder, sendToCart])
-        setProductValue(0)
+  const handleClick = (id: number) => {
+    if (productValue === 0) {
+      return
     }
+
+    const selectedBeverage = beverages.find(
+      (beverage) => beverage.id === id
+    )
+
+    const sendToCart = {
+      id: selectedBeverage?.id,
+      title: selectedBeverage?.title,
+      image: selectedBeverage?.image,
+      value: productValue
+    }
+
+    setBeverageOrder([...beverageOrder, sendToCart])
+    setProductValue(0)
+  }
 
   const getBeverages = async () => {
     try {
