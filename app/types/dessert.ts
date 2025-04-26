@@ -6,5 +6,4 @@ export type Dessert= {
     value: number
 }
 
-  
-  export type DessertList = Dessert[]
+export type DessertList = Dessert[]

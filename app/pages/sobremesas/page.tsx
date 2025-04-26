@@ -13,7 +13,7 @@ import {
   ProductCardTitle,
   ProductRadioButtom,
 } from "@/app/components"
-import { Dessert, DessertList } from "@/app/types/desserts"
+import { Dessert, DessertList } from "@/app/types/dessert"
 
 export default function Desserts() {
   const baseURL = "https://burgerlivery-api.vercel.app"
@@ -64,7 +64,7 @@ export default function Desserts() {
 
   return (
     <section className="container mx-auto h-screen">
-      <h1 className="text-4xl text-gray-700 font-bold mb-6">Entradas</h1>
+      <h1 className="text-4xl text-gray-700 font-bold mb-6">Sobremesas</h1>
       <div className="flex gap-4">
         {desserts.map((dessert: Dessert) => (
           <ProductCard key={dessert.id}>

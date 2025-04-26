@@ -10,4 +10,4 @@ export type Appetizer = {
 }
 
 export type AppetizerList = Appetizer[]
-// export type AppetizerList = Array<Appetizer>
+
