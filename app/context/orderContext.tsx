@@ -1,23 +1,49 @@
 "use client"
+
 import { createContext, useEffect, useState } from "react"
 
 interface OrderProviderProps {
   children: React.ReactNode
 }
 
-const OrderContext = createContext<unknown>({})
+interface OrderItem {
+  id: number
+  title: string
+  image: string | string[]
+  value: number
+}
 
-// Provedor de contexto
-// O Provedor de contexto é um componente que envolve a aplicação e fornece o contexto para todos os componentes filhos
+
+interface OrderContextType {
+  appetizerOrder: OrderItem[]
+  setAppetizerOrder: (items: OrderItem[]) => void
+  hamburgerOrder: OrderItem[]
+  setHamburgerOrder: (items: OrderItem[]) => void
+  beverageOrder: OrderItem[]
+  setBeverageOrder: (items: OrderItem[]) => void
+  dessertOrder: OrderItem[]
+  setDessertOrder: (items: OrderItem[]) => void
+  totalItems: number
+}
+
+const OrderContext = createContext<OrderContextType>({} as OrderContextType)
+
 export const OrderProvider = ({ children }: OrderProviderProps) => {
-  const [appetizerOrder, setAppetizerOrder] = useState<number[]>([])
-  const [hamburgerOrder, setHamburgerOrder] = useState<number[]>([])
-
-  const [totalItems, setSetTotalItems] = useState<number>(0)
+  const [appetizerOrder, setAppetizerOrder] = useState<OrderItem[]>([])
+  const [hamburgerOrder, setHamburgerOrder] = useState<OrderItem[]>([])
+  const [beverageOrder, setBeverageOrder] = useState<OrderItem[]>([])
+  const [dessertOrder, setDessertOrder] = useState<OrderItem[]>([])
+  const [totalItems, setTotalItems] = useState<number>(0)
 
   useEffect(() => {
-    setSetTotalItems(appetizerOrder.length)
-  }, [appetizerOrder])
+    const total =
+      appetizerOrder.length +
+      hamburgerOrder.length +
+      beverageOrder.length +
+      dessertOrder.length
+
+    setTotalItems(total)
+  }, [appetizerOrder, hamburgerOrder, beverageOrder, dessertOrder])
 
   return (
     <OrderContext.Provider
@@ -26,8 +52,11 @@ export const OrderProvider = ({ children }: OrderProviderProps) => {
         setAppetizerOrder,
         hamburgerOrder,
         setHamburgerOrder,
+        beverageOrder,
+        setBeverageOrder,
+        dessertOrder,
+        setDessertOrder,
         totalItems,
-        setSetTotalItems,
       }}
     >
       {children}
