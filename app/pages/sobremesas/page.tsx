@@ -30,7 +30,6 @@ export default function Desserts() {
 
   const handleClick = (id: number) => {
     if (productValue === 0) {
-      // alert("Selecione um valor")
       return
     }
 
