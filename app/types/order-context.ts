@@ -39,7 +39,20 @@ export interface OrderContextType {
         image?: string | string[];
         value: number;
       }>>>;
-      
+
+      dessertOrder: Array<{
+        id?: number;
+        title?: string;
+        image?: string | string[];
+        value: number;
+      }>;
+      setDessertOrder: React.Dispatch<React.SetStateAction<Array<{
+        id?: number;
+        title?: string;
+        image?: string | string[];
+        value: number;
+      }>>>;
+
     totalItems: number;
     setSetTotalItems: React.Dispatch<React.SetStateAction<number>>;
   }
