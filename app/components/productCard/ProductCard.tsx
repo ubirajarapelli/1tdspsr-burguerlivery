@@ -2,10 +2,11 @@ import Image from "next/image"
 
 interface ProductCardProps {
   children: React.ReactNode
+  className?: string
 }
-export const ProductCard = ({ children }: ProductCardProps) => {
+export const ProductCard = ({ children, className }: ProductCardProps) => {
   return (
-    <article className="w-1/4 flex flex-col justify-between p-4 bg-gray-50 border-gray-500 rounded-lg shadow-xs">
+    <article className={`w-1/4 flex flex-col justify-between p-4 bg-gray-50 border-gray-500 rounded-lg shadow-xs ${className}`}>
       {children}
     </article>
   )
