@@ -1,4 +1,4 @@
-export type OrderContextType = {
+export interface OrderContextType {
     appetizerOrder: Array<{
       id?: number;
       title?: string;
