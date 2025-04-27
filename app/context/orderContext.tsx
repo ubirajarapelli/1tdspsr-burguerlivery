@@ -1,23 +1,29 @@
 "use client"
 import { createContext, useEffect, useState } from "react"
+import { OrderContextType } from "../types/order-context"
 
 interface OrderProviderProps {
   children: React.ReactNode
 }
 
-const OrderContext = createContext<unknown>({})
+interface OrderItem {
+  id?: number
+  title?: string
+  image?: string | string[]
+  value: number
+}
 
-// Provedor de contexto
-// O Provedor de contexto é um componente que envolve a aplicação e fornece o contexto para todos os componentes filhos
+const OrderContext = createContext<OrderContextType>({} as OrderContextType)
+
 export const OrderProvider = ({ children }: OrderProviderProps) => {
-  const [appetizerOrder, setAppetizerOrder] = useState<number[]>([])
-  const [hamburgerOrder, setHamburgerOrder] = useState<number[]>([])
+  const [appetizerOrder, setAppetizerOrder] = useState<OrderItem[]>([])
+  const [hamburgerOrder, setHamburgerOrder] = useState<OrderItem[]>([])
 
   const [totalItems, setSetTotalItems] = useState<number>(0)
 
   useEffect(() => {
-    setSetTotalItems(appetizerOrder.length)
-  }, [appetizerOrder])
+    setSetTotalItems(appetizerOrder.length + hamburgerOrder.length)
+  }, [appetizerOrder, hamburgerOrder])
 
   return (
     <OrderContext.Provider
