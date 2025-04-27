@@ -18,6 +18,7 @@ const OrderContext = createContext<OrderContextType>({} as OrderContextType)
 export const OrderProvider = ({ children }: OrderProviderProps) => {
   const [appetizerOrder, setAppetizerOrder] = useState<OrderItem[]>([])
   const [hamburgerOrder, setHamburgerOrder] = useState<OrderItem[]>([])
+  const [beverageOrder, setBeverageOrder] = useState<OrderItem[]>([])
 
   const [totalItems, setSetTotalItems] = useState<number>(0)
 
@@ -32,6 +33,8 @@ export const OrderProvider = ({ children }: OrderProviderProps) => {
         setAppetizerOrder,
         hamburgerOrder,
         setHamburgerOrder,
+        beverageOrder,
+        setBeverageOrder,
         totalItems,
         setSetTotalItems,
       }}
