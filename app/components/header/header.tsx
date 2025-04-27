@@ -6,6 +6,8 @@ import { MenuItem } from "../menuItem/Menuitem"
 import OrderContext from "@/app/context/orderContext"
 import { useContext } from "react"
 
+// Verificar com o professor o porque esse "sessionStorage" da erro
+
 export const Header = () => {
   const router = useRouter()
   const userToken = sessionStorage.getItem("token")
