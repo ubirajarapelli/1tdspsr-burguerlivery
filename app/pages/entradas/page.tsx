@@ -19,7 +19,7 @@ export default function Appetizers() {
   const baseURL = "https://burgerlivery-api.vercel.app"
 
   const { appetizerOrder, setAppetizerOrder } =
-    useContext<unknown>(OrderContext)
+  useContext<unknown>(OrderContext)
 
   const [appetizers, setAppetizers] = useState<AppetizerList>([])
   const [productValue, setProductValue] = useState<number>(0)
