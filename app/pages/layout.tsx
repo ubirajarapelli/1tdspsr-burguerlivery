@@ -7,9 +7,11 @@ export default function ProductsLayout({
   children: React.ReactNode
 }>) {
   return (
-    <main className="bg-gray-200">
+    <main className="bg-gray-200 h-screen flex flex-col">
       <Header />
-      {children}
+      <div className="flex-grow overflow-auto">
+        {children}
+      </div>
       <Footer />
     </main>
   )
