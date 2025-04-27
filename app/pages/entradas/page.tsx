@@ -31,8 +31,7 @@ export default function Appetizers() {
 
   const handleClick = (id: number) => {
     if (productValue === 0) {
-      // alert("Selecione um valor")
-      return
+      return console.log("nao mandou nada")
     }
 
     const selectedApperizer = appetizers.find(
