@@ -18,8 +18,10 @@ import { Hamburger, HamburgerList } from "@/app/types/hamburger";
 export default function Hamburgers() {
   const baseURL = "https://burgerlivery-api.vercel.app";
 
-  const { hamburgerOrder, setHamburgerOrder } =
-    useContext<unknown>(OrderContext);
+  const { hamburgerOrder, setHamburgerOrder } = useContext(OrderContext) as {
+    hamburgerOrder: any[];
+    setHamburgerOrder: React.Dispatch<React.SetStateAction<any[]>>;
+  };
 
   const [burgers, setHamburgers] = useState<HamburgerList>([]);
   const [productValue, setProductValue] = useState<number>(0);
@@ -30,17 +32,14 @@ export default function Hamburgers() {
   };
 
   const handleClick = (id: number) => {
-    if (productValue === 0) {
-      // alert("Selecione um valor")
-      return;
-    }
+    if (productValue === 0) return;
 
-    const selectedApperizer = burgers.find((hamburger) => hamburger.id === id);
+    const selectedHamburger = burgers.find((hamburger) => hamburger.id === id);
 
     const sendToCart = {
-      id: selectedApperizer?.id,
-      title: selectedApperizer?.title,
-      image: selectedApperizer?.image,
+      id: selectedHamburger?.id,
+      title: selectedHamburger?.title,
+      image: selectedHamburger?.image,
       value: productValue,
     };
 
