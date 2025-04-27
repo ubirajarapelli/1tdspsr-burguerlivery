@@ -14,12 +14,13 @@ import {
   ProductRadioButtom,
 } from "@/app/components"
 import { Appetizer, AppetizerList } from "@/app/types/appetizer"
+import { OrderContextType } from "@/app/types/order-context"
 
 export default function Appetizers() {
   const baseURL = "https://burgerlivery-api.vercel.app"
 
   const { appetizerOrder, setAppetizerOrder } =
-    useContext<unknown>(OrderContext)
+    useContext<OrderContextType>(OrderContext)
 
   const [appetizers, setAppetizers] = useState<AppetizerList>([])
   const [productValue, setProductValue] = useState<number>(0)
@@ -31,7 +32,6 @@ export default function Appetizers() {
 
   const handleClick = (id: number) => {
     if (productValue === 0) {
-      // alert("Selecione um valor")
       return
     }
 
