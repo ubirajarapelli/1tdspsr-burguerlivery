@@ -5,13 +5,15 @@ import { Logo } from "../logo/Logo"
 import { MenuItem } from "../menuItem/Menuitem"
 import OrderContext from "@/app/context/orderContext"
 import { useContext } from "react"
+import { OrderContextType } from "@/app/types/order-context"
+import { ShoppingCart } from "lucide-react"
 
 export const Header = () => {
   const router = useRouter()
   const userToken = sessionStorage.getItem("token")
   const userData = JSON.parse(sessionStorage.getItem("user"))
 
-  const { totalItems } = useContext<unknown>(OrderContext)
+  const { totalItems } = useContext<OrderContextType>(OrderContext)
 
   const handleLogout = () => {
     sessionStorage.removeItem("token")
@@ -50,7 +52,14 @@ export const Header = () => {
                 </Link>
               </li>
             )}
-            <MenuItem link="">{totalItems}</MenuItem>
+            <MenuItem link="" className="relative inline-block">
+              <ShoppingCart className="h-6 w-6" />
+              {totalItems > 0 && (
+                <span className="absolute -top-2 -right-2 bg-amber-500 text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center">
+                  {totalItems}
+                </span>
+              )}
+            </MenuItem>
           </ul>
         </nav>
       </div>
