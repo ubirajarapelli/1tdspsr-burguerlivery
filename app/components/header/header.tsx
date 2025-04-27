@@ -3,15 +3,15 @@ import { useRouter } from "next/navigation"
 import Link from "next/link"
 import { Logo } from "../logo/Logo"
 import { MenuItem } from "../menuItem/Menuitem"
-import OrderContext, { OrderContextType } from "@/app/context/orderContext"
+import OrderContext from "@/app/context/orderContext"
 import { useContext } from "react"
 
 export const Header = () => {
   const router = useRouter()
   const userToken = sessionStorage.getItem("token")
-  const userData = sessionStorage.getItem("user") ? JSON.parse(sessionStorage.getItem("user") as string) : null
+  const userData = JSON.parse(sessionStorage.getItem("user"))
 
-  const { totalItems } = useContext<OrderContextType>(OrderContext)
+  const { totalItems } = useContext<unknown>(OrderContext)
 
   const handleLogout = () => {
     sessionStorage.removeItem("token")

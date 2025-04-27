@@ -1,16 +1,123 @@
 "use client"
-import OrderContext from "@/app/context/orderContext"
-import { useContext } from "react"
 
-export default function Hamburgers() {
-  const { appetizerOrder } = useContext<unknown>(OrderContext)
+import { useContext, useEffect, useState } from "react"
+import axios from "axios"
+import OrderContext from "@/app/context/orderContext"
+import {
+
+  FormButton,
+  ProductCard,
+  ProductCardAction,
+  ProductCardDescription,
+  ProductCardHeader,
+  ProductCardImage,
+  ProductCardTitle,
+  ProductRadioButtom,
+} from "@/app/components"
+
+import { Burguer, BurguerList } from "@/app/types/burguer"
+
+export default function Burguers() {
+  const baseURL = "https://burgerlivery-api.vercel.app"
+
+  const { hamburgerOrder, setHamburgerOrder } =
+    useContext<unknown>(OrderContext)
+
+  const [hamburguers, setHamburguers] = useState<BurguerList>([])
+  const [productValue, setProductValue] = useState<number>(0)
+
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const { value } = event.target
+    setProductValue(Number(value))
+  }
+
+  const handleClick = (id: number) => {
+    if (productValue === 0) {
+      // alert("Selecione um valor")
+      return
+    }
+
+    const selectedHamburguer = hamburguers.find(
+      (hamburguer) => hamburguer.id === id
+    )
+
+    const sendToCart = {
+      id: selectedHamburguer?.id,
+      title: selectedHamburguer?.title,
+      image: selectedHamburguer?.image,
+      value: productValue,
+    }
+
+    setHamburgerOrder([...hamburgerOrder, sendToCart])
+    setProductValue(0)
+  }
+
+  const getBurguers = async () => {
+    try {
+      const response = await axios.get(`${baseURL}/hamburgers`)
+      setHamburguers(response.data)
+    } catch (error) {
+      console.error("Error fetching burguers:", error)
+    }
+  }
+
+  useEffect(() => {
+    getBurguers()
+  }, [])
 
   return (
-    <div className="container mx-auto h-svh">
-      <h1 className="text-4xl font-bold text-center">Hamburgers</h1>
-      <p className="text-center">Faça seu pedido online</p>
+    <section className="container mx-auto h-screen">
+      <h1 className="text-4xl text-gray-700 font-bold mb-6">Entradas</h1>
+      <div className="flex gap-4">
+        {hamburguers.map((hamburguer: Burguer) => (
+          <ProductCard key={hamburguer.id}>
+            <ProductCardHeader>
+              <ProductCardImage
+                src={hamburguer.image[0]}
+                alt={hamburguer.title}
+                width={120}
+                height={120}
+              />
+              <ProductCardTitle>{hamburguer.title}</ProductCardTitle>
+              <ProductCardDescription>
+                {hamburguer.description}
+              </ProductCardDescription>
+            </ProductCardHeader>
+            <ProductCardAction>
+            {hamburguer.values.combo ? (
+                <>
+                  <ProductRadioButtom
+                    id={`${hamburguer.id}-${hamburguer.values.single}`}
+                    label="Single"
+                    name={hamburguer.title}
+                    onChange={handleChange}
+                    value={hamburguer.values.single}
+                  />
 
-      <p>{appetizerOrder.length}</p>
-    </div>
+                  <ProductRadioButtom
+                    id={`${hamburguer.id}-${hamburguer.values.combo}`}
+                    label="Combo"
+                    name={hamburguer.title}
+                    onChange={handleChange}
+                    value={hamburguer.values.combo}
+                  />
+                </>
+              ) : (
+                <ProductRadioButtom
+                  id={`${hamburguer.id}-${hamburguer.values.single}`}
+                  name={hamburguer.title}
+                  label="10 unidades"
+                  onChange={handleChange}
+                  value={hamburguer.values.single}
+                />
+              )}
+              <FormButton onClick={() => handleClick(hamburguer.id)}>
+                Adicionar
+              </FormButton>
+            </ProductCardAction>
+          </ProductCard>
+        ))}
+      </div>
+    </section>
   )
 }
