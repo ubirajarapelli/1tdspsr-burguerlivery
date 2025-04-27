@@ -106,7 +106,7 @@ export default function Burguers() {
                 <ProductRadioButtom
                   id={`${hamburguer.id}-${hamburguer.values.single}`}
                   name={hamburguer.title}
-                  label="10 unidades"
+                  label="Single"
                   onChange={handleChange}
                   value={hamburguer.values.single}
                 />
