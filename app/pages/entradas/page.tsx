@@ -35,14 +35,14 @@ export default function Appetizers() {
       return
     }
 
-    const selectedApperizer = appetizers.find(
+    const selectedAppetizer = appetizers.find(
       (appetizer) => appetizer.id === id
     )
 
     const sendToCart = {
-      id: selectedApperizer?.id,
-      title: selectedApperizer?.title,
-      image: selectedApperizer?.image,
+      id: selectedAppetizer?.id,
+      title: selectedAppetizer?.title,
+      image: selectedAppetizer?.image,
       value: productValue,
     }
 
