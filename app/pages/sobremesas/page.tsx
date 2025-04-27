@@ -50,7 +50,7 @@ export default function Sobremesa() {
 
   const getsobremesa = async () => {
     try {
-      const response = await axios.get(`${baseURL}/beverages`)
+      const response = await axios.get(`${baseURL}/desserts`)
       console.log("API data:", response.data)
       setSobremesas(response.data)
     } catch (error) {
@@ -82,11 +82,11 @@ export default function Sobremesa() {
             </ProductCardHeader>
           <ProductCardAction>
             <ProductRadioButtom
-              id={`${sobremesa.id}-${sobremesa.values}`}
+              id={`${sobremesa.id}-${sobremesa.value}`}
               name={sobremesa.title}
               label={sobremesa.title}
               onChange={handleChange}
-              value={sobremesa.values}
+              value={sobremesa.value}
             />
             <FormButton onClick={() => handleClick(sobremesa.id)}>
               Adicionar

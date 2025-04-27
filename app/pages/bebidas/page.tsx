@@ -81,11 +81,11 @@ export default function Bebidas() {
             </ProductCardHeader>
           <ProductCardAction>
             <ProductRadioButtom
-              id={`${bebidas.id}-${bebidas.values}`}
+              id={`${bebidas.id}-${bebidas.value}`}
               name={bebidas.title}
               label={bebidas.title}
               onChange={handleChange}
-              value={bebidas.values}
+              value={bebidas.value}
             />
             <FormButton onClick={() => handleClick(bebidas.id)}>
               Adicionar

@@ -3,7 +3,7 @@ export type bebidas = {
   image: string
   title: string
   description: string
-  values: number
+  value: number
 }
 
 export type listaBebidas = bebidas[]
