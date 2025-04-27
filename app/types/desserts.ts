@@ -1,4 +1,4 @@
-export type Beverage = {
+export type Dessert = {
     id: number
     image: string
     title: string
@@ -6,4 +6,4 @@ export type Beverage = {
     values: number
 }
 
-export type BeverageList = Beverage[]
+export type DessertList = Dessert[]
