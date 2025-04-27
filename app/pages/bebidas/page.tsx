@@ -13,7 +13,7 @@ import {
   ProductCardTitle,
   ProductRadioButtom,
 } from "@/app/components"
-import { beverages, beveragesList } from "@/app/types/beverages"
+import { beverages_desserts, beverages_dessertsList } from "@/app/types/beverages-desserts"
 
 
 export default function Beverages() {
@@ -22,7 +22,7 @@ export default function Beverages() {
   const { beveragesOrder, setBeveragesOrder } :any =
     useContext<unknown>(OrderContext)
 
-  const [beverages, setbeverages] = useState<beveragesList>([])
+  const [beverages, setbeverages] = useState<beverages_dessertsList>([])
   const [productValue, setProductValue] = useState<number>(0)
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -32,7 +32,7 @@ export default function Beverages() {
 
   const handleClick = (id: number) => {
     if (productValue === 0) {
-      // alert("Selecione um valor")
+      alert("Por gentileza, selecione um valor")
       return
     }
 
@@ -68,7 +68,7 @@ export default function Beverages() {
     <section className="container mx-auto">
       <h1 className="text-4xl text-gray-700 font-bold mb-6">Bebidas</h1>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-4">
-        {beverages.map((beverages: beverages) => (
+        {beverages.map((beverages: beverages_desserts) => (
           <ProductCard key={beverages.id}>
             <ProductCardHeader>
               <ProductCardImage
