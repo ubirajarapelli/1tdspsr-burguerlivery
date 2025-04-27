@@ -65,46 +65,48 @@ export default function Hamburgers() {
 
 
   return (
-        <section className="container mx-auto h-screen">
-          <h1 className="text-4xl text-gray-700 font-bold mb-6">Hamburguers</h1>
-          <div className="flex gap-4">
-            {hamburguers.map((hamburger: hamburgers) => (
-              <ProductCard key={hamburger.id}>
-                <ProductCardHeader>
-                  <ProductCardImage
-                    src={hamburger.image[0]}
-                    alt={hamburger.title}
-                    width={120}
-                    height={120}
-                  />
-                  <ProductCardTitle>{hamburger.title}</ProductCardTitle>
-                  <ProductCardDescription>
-                    {hamburger.description}
-                  </ProductCardDescription>
-                </ProductCardHeader>
-                <ProductCardAction>
-                  <ProductRadioButtom
-                    id={`${hamburger.id}-${hamburger.values.single}`}
-                    label="apenas o hamburguer"
-                    name={hamburger.title}
-                    onChange={handleChange}
-                    value={hamburger.values.single}
-                  />
+    <section className="container mx-auto">
+  <h1 className="text-4xl text-gray-700 font-bold mb-6">Hamburguers</h1>
+  <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+    {hamburguers.map((hamburger: hamburgers) => (
+      <ProductCard key={hamburger.id}>
+        <ProductCardHeader>
+          <ProductCardImage
+            src={hamburger.image[0]}
+            alt={hamburger.title}
+            width={120}
+            height={120}
+          />
+          <ProductCardTitle>{hamburger.title}</ProductCardTitle>
+          <ProductCardDescription>
+            {hamburger.description}
+          </ProductCardDescription>
+        </ProductCardHeader>
+        <ProductCardAction>
+          <ProductRadioButtom
+            id={`${hamburger.id}-${hamburger.values.single}`}
+            label="apenas o hamburguer"
+            name={hamburger.title}
+            onChange={handleChange}
+            value={hamburger.values.single}
+          />
 
-                  <ProductRadioButtom
-                    id={`${hamburger.id}-${hamburger.values.combo}`}
-                    label={`combo do ${hamburger.title}`}
-                    name={hamburger.title}
-                    onChange={handleChange}
-                    value={hamburger.values.combo}/>
+          <ProductRadioButtom
+            id={`${hamburger.id}-${hamburger.values.combo}`}
+            label={`combo do ${hamburger.title}`}
+            name={hamburger.title}
+            onChange={handleChange}
+            value={hamburger.values.combo}
+          />
 
-                  <FormButton onClick={() => handleClick(hamburger.id)}>
-                    Adicionar
-                  </FormButton>
-                </ProductCardAction>
-              </ProductCard>
-            ))}
-          </div>
-        </section>
+          <FormButton onClick={() => handleClick(hamburger.id)}>
+            Adicionar
+          </FormButton>
+        </ProductCardAction>
+      </ProductCard>
+    ))}
+  </div>
+</section>
+
   )
 }

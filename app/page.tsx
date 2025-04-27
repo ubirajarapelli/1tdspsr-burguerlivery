@@ -3,7 +3,7 @@ import { Logo } from "./components"
 
 export default function Home() {
   return (
-    <main className="bg-gray-200 h-svh">
+    <main className="bg-gray-200 h-full">
       <div className="container mx-auto">
         <header className="py-3">
           <a href="" className="flex items-center gap-1">

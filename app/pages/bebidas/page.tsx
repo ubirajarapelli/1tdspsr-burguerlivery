@@ -65,9 +65,9 @@ export default function Beverages() {
   }, [])
 
   return (
-    <section className="container mx-auto h-screen">
+    <section className="container mx-auto">
       <h1 className="text-4xl text-gray-700 font-bold mb-6">Bebidas</h1>
-      <div className="flex gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-4">
         {beverages.map((beverages: beverages) => (
           <ProductCard key={beverages.id}>
             <ProductCardHeader>
@@ -77,25 +77,27 @@ export default function Beverages() {
                 width={120}
                 height={120}
               />
-              <ProductCardTitle>{beverages.title}</ProductCardTitle>
+            <ProductCardTitle>{beverages.title}</ProductCardTitle>
               <ProductCardDescription>
                 {beverages.description}
               </ProductCardDescription>
             </ProductCardHeader>
-            <ProductCardAction>
-                <ProductRadioButtom
-                    id={`${beverages.id}-${beverages.value}`}
-                    name={beverages.title}
-                    label={beverages.title}
-                    onChange={handleChange}
-                    value={beverages.value}/>
-              <FormButton onClick={() => handleClick(beverages.id)}>
-                Adicionar
-              </FormButton>
-            </ProductCardAction>
-          </ProductCard>
-        ))}
-      </div>
-    </section>
+          <ProductCardAction>
+            <ProductRadioButtom
+              id={`${beverages.id}-${beverages.value}`}
+              name={beverages.title}
+              label={beverages.title}
+              onChange={handleChange}
+              value={beverages.value}
+            />
+            <FormButton onClick={() => handleClick(beverages.id)}>
+              Adicionar
+            </FormButton>
+          </ProductCardAction>
+        </ProductCard>
+      ))}
+  </div>
+</section>
+
   )
 }
