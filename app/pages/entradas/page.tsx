@@ -1,8 +1,8 @@
-"use client"
+"use client";
 
-import { useContext, useEffect, useState } from "react"
-import axios from "axios"
-import OrderContext from "@/app/context/orderContext"
+import { useContext, useEffect, useState } from "react";
+import axios from "axios";
+import OrderContext from "@/app/context/orderContext";
 import {
   FormButton,
   ProductCard,
@@ -12,56 +12,56 @@ import {
   ProductCardImage,
   ProductCardTitle,
   ProductRadioButtom,
-} from "@/app/components"
-import { Appetizer, AppetizerList } from "@/app/types/appetizer"
+} from "@/app/components";
+import { Appetizer, AppetizerList } from "@/app/types/appetizer";
 
 export default function Appetizers() {
-  const baseURL = "https://burgerlivery-api.vercel.app"
+  const baseURL = "https://burgerlivery-api.vercel.app";
 
   const { appetizerOrder, setAppetizerOrder } =
-    useContext<unknown>(OrderContext)
+    useContext<unknown>(OrderContext);
 
-  const [appetizers, setAppetizers] = useState<AppetizerList>([])
-  const [productValue, setProductValue] = useState<number>(0)
+  const [appetizers, setAppetizers] = useState<AppetizerList>([]);
+  const [productValue, setProductValue] = useState<number>(0);
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const { value } = event.target
-    setProductValue(Number(value))
-  }
+    const { value } = event.target;
+    setProductValue(Number(value));
+  };
 
   const handleClick = (id: number) => {
     if (productValue === 0) {
       // alert("Selecione um valor")
-      return
+      return;
     }
 
     const selectedApperizer = appetizers.find(
       (appetizer) => appetizer.id === id
-    )
+    );
 
     const sendToCart = {
       id: selectedApperizer?.id,
       title: selectedApperizer?.title,
       image: selectedApperizer?.image,
       value: productValue,
-    }
+    };
 
-    setAppetizerOrder([...appetizerOrder, sendToCart])
-    setProductValue(0)
-  }
+    setAppetizerOrder([...appetizerOrder, sendToCart]);
+    setProductValue(0);
+  };
 
   const getAppetizers = async () => {
     try {
-      const response = await axios.get(`${baseURL}/appetizers`)
-      setAppetizers(response.data)
+      const response = await axios.get(`${baseURL}/appetizers`);
+      setAppetizers(response.data);
     } catch (error) {
-      console.error("Error fetching appetizers:", error)
+      console.error("Error fetching appetizers:", error);
     }
-  }
+  };
 
   useEffect(() => {
-    getAppetizers()
-  }, [])
+    getAppetizers();
+  }, []);
 
   return (
     <section className="container mx-auto h-screen">
@@ -117,5 +117,5 @@ export default function Appetizers() {
         ))}
       </div>
     </section>
-  )
+  );
 }

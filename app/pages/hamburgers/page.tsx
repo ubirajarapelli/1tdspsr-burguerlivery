@@ -13,14 +13,15 @@ import {
   ProductCardTitle,
   ProductRadioButtom,
 } from "@/app/components";
-import { Burger, BurgerList } from "@/app/types/burger";
+import { Hamburger, HamburgerList } from "@/app/types/hamburger";
 
-export default function Burger() {
+export default function Hamburgers() {
   const baseURL = "https://burgerlivery-api.vercel.app";
 
-  const { burgerOrder, setBurgerOrder } = useContext<unknown>(OrderContext);
+  const { hamburgerOrder, setHamburgerOrder } =
+    useContext<unknown>(OrderContext);
 
-  const [burgers, setBurgers] = useState<BurgerList>([]);
+  const [burgers, setHamburgers] = useState<HamburgerList>([]);
   const [productValue, setProductValue] = useState<number>(0);
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -34,79 +35,79 @@ export default function Burger() {
       return;
     }
 
-    const selectedBurger = burgers.find((burger) => burger.id === id);
+    const selectedApperizer = burgers.find((hamburger) => hamburger.id === id);
 
     const sendToCart = {
-      id: selectedBurger?.id,
-      title: selectedBurger?.title,
-      image: selectedBurger?.image,
+      id: selectedApperizer?.id,
+      title: selectedApperizer?.title,
+      image: selectedApperizer?.image,
       value: productValue,
     };
 
-    setBurgerOrder([...burgerOrder, sendToCart]);
+    setHamburgerOrder([...hamburgerOrder, sendToCart]);
     setProductValue(0);
   };
 
-  const getBurgers = async () => {
+  const getHamburgers = async () => {
     try {
-      const response = await axios.get(`${baseURL}/burgers`);
-      setBurgers(response.data);
+      const response = await axios.get(`${baseURL}/hamburgers`);
+      setHamburgers(response.data);
     } catch (error) {
       console.error("Error fetching burgers:", error);
     }
   };
 
   useEffect(() => {
-    getBurgers();
+    getHamburgers();
   }, []);
 
   return (
     <section className="container mx-auto h-screen">
-      <h1 className="text-4xl text-gray-700 font-bold mb-6">Burgers</h1>
+      <h1 className="text-4xl text-gray-700 font-bold mb-6">Hamburgers</h1>
       <div className="flex gap-4">
-        {burgers.map((burger: Burger) => (
-          <ProductCard key={burger.id}>
+        {burgers.map((hamburger: Hamburger) => (
+          <ProductCard key={hamburger.id}>
             <ProductCardHeader>
               <ProductCardImage
-                src={burger.image}
-                alt={burger.title}
+                src={hamburger.image[0]}
+                alt={hamburger.title}
                 width={120}
                 height={120}
               />
-              <ProductCardTitle>{burger.title}</ProductCardTitle>
+              <ProductCardTitle>{hamburger.title}</ProductCardTitle>
               <ProductCardDescription>
-                {burger.description}
+                {hamburger.description}
               </ProductCardDescription>
             </ProductCardHeader>
             <ProductCardAction>
-              {burger.values.large ? (
+              {hamburger.values.combo ? (
                 <>
                   <ProductRadioButtom
-                    id={`${burger.id}-${burger.values.small}`}
-                    label="Pequeno"
-                    name={burger.title}
+                    id={`${hamburger.id}-${hamburger.values.single}`}
+                    label="Single"
+                    name={hamburger.title}
                     onChange={handleChange}
-                    value={burger.values.small}
+                    value={hamburger.values.single}
                   />
 
                   <ProductRadioButtom
-                    id={`${burger.id}-${burger.values.large}`}
-                    label="Grande"
-                    name={burger.title}
+                    id={`${hamburger.id}-${hamburger.values.combo}`}
+                    label="Combo"
+                    name={hamburger.title}
                     onChange={handleChange}
-                    value={burger.values.large}
+                    value={hamburger.values.combo}
                   />
                 </>
               ) : (
                 <ProductRadioButtom
-                  id={`${burger.id}-${burger.values.small}`}
-                  name={burger.title}
-                  label="10 unidades"
+                  id={`${hamburger.id}-${hamburger.values.single}`}
+                  label="Porção única"
+                  name={hamburger.title}
                   onChange={handleChange}
-                  value={burger.values.small}
+                  value={hamburger.values.single}
                 />
               )}
-              <FormButton onClick={() => handleClick(burger.id)}>
+              <FormButton onClick={() => handleClick(hamburger.id)}>
                 Adicionar
               </FormButton>
             </ProductCardAction>
