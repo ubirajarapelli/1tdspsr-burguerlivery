@@ -13,17 +13,15 @@ import {
   ProductCardTitle,
   ProductRadioButtom,
 } from "@/app/components";
-import { Hamburger, HamburgerList } from "@/app/types/hamburger";
+import { Hamburgers, HamburgersList } from "@/app/types/hamburgers";
 
 export default function Hamburgers() {
   const baseURL = "https://burgerlivery-api.vercel.app";
 
-  const { hamburgerOrder, setHamburgerOrder } = useContext(OrderContext) as {
-    hamburgerOrder: any[];
-    setHamburgerOrder: React.Dispatch<React.SetStateAction<any[]>>;
-  };
+  const { hamburgersOrder, setHamburgersOrder } =
+    useContext<unknown>(OrderContext);
 
-  const [burgers, setHamburgers] = useState<HamburgerList>([]);
+  const [hamburgers, setHamburgers] = useState<HamburgersList>([]);
   const [productValue, setProductValue] = useState<number>(0);
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -32,18 +30,23 @@ export default function Hamburgers() {
   };
 
   const handleClick = (id: number) => {
-    if (productValue === 0) return;
+    if (productValue === 0) {
+      // alert("Selecione um valor")
+      return;
+    }
 
-    const selectedHamburger = burgers.find((hamburger) => hamburger.id === id);
+    const selectedHamburgers = hamburgers.find(
+      (hamburgers) => hamburgers.id === id
+    );
 
     const sendToCart = {
-      id: selectedHamburger?.id,
-      title: selectedHamburger?.title,
-      image: selectedHamburger?.image,
+      id: selectedHamburgers?.id,
+      title: selectedHamburgers?.title,
+      image: selectedHamburgers?.image,
       value: productValue,
     };
-
-    setHamburgerOrder([...hamburgerOrder, sendToCart]);
+    console.log(selectedHamburgers);
+    setHamburgersOrder([...hamburgersOrder, sendToCart]);
     setProductValue(0);
   };
 
@@ -52,7 +55,7 @@ export default function Hamburgers() {
       const response = await axios.get(`${baseURL}/hamburgers`);
       setHamburgers(response.data);
     } catch (error) {
-      console.error("Error fetching burgers:", error);
+      console.error("Error fetching hamburgers:", error);
     }
   };
 
@@ -63,50 +66,50 @@ export default function Hamburgers() {
   return (
     <section className="container mx-auto h-screen">
       <h1 className="text-4xl text-gray-700 font-bold mb-6">Hamburgers</h1>
-      <div className="flex gap-4">
-        {burgers.map((hamburger: Hamburger) => (
-          <ProductCard key={hamburger.id}>
+      <div className="flex gap-8">
+        {hamburgers.map((hamburgers: Hamburgers) => (
+          <ProductCard key={hamburgers.id}>
             <ProductCardHeader>
               <ProductCardImage
-                src={hamburger.image[0]}
-                alt={hamburger.title}
+                src={hamburgers.image}
+                alt={hamburgers.title}
                 width={120}
                 height={120}
               />
-              <ProductCardTitle>{hamburger.title}</ProductCardTitle>
+              <ProductCardTitle>{hamburgers.title}</ProductCardTitle>
               <ProductCardDescription>
-                {hamburger.description}
+                {hamburgers.description}
               </ProductCardDescription>
             </ProductCardHeader>
             <ProductCardAction>
-              {hamburger.values.combo ? (
+              {hamburgers.values.combo ? (
                 <>
                   <ProductRadioButtom
-                    id={`${hamburger.id}-${hamburger.values.single}`}
-                    label="Single"
-                    name={hamburger.title}
+                    id={`${hamburgers.id}-${hamburgers.values.single}`}
+                    label="Pequeno"
+                    name={hamburgers.title}
                     onChange={handleChange}
-                    value={hamburger.values.single}
+                    value={hamburgers.values.single}
                   />
 
                   <ProductRadioButtom
-                    id={`${hamburger.id}-${hamburger.values.combo}`}
-                    label="Combo"
-                    name={hamburger.title}
+                    id={`${hamburgers.id}-${hamburgers.values.combo}`}
+                    label="Grande"
+                    name={hamburgers.title}
                     onChange={handleChange}
-                    value={hamburger.values.combo}
+                    value={hamburgers.values.combo}
                   />
                 </>
               ) : (
                 <ProductRadioButtom
-                  id={`${hamburger.id}-${hamburger.values.single}`}
-                  label="Porção única"
-                  name={hamburger.title}
+                  id={`${hamburgers.id}-${hamburgers.values.single}`}
+                  name={hamburgers.title}
+                  label="10 unidades"
                   onChange={handleChange}
-                  value={hamburger.values.single}
+                  value={hamburgers.values.single}
                 />
               )}
-              <FormButton onClick={() => handleClick(hamburger.id)}>
+              <FormButton onClick={() => handleClick(hamburgers.id)}>
                 Adicionar
               </FormButton>
             </ProductCardAction>
