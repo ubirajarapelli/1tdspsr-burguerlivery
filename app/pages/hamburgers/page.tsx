@@ -13,7 +13,7 @@ import {
   ProductCardTitle,
   ProductRadioButtom,
 } from "@/app/components";
-import { Hamburger, HamburgerList } from "@/app/types/hamburger";
+import { hamburgers, listaHamburger } from "@/app/types/hamburger";
 
 export default function Hamburgers() {
   const baseURL = "https://burgerlivery-api.vercel.app";
@@ -23,7 +23,7 @@ export default function Hamburgers() {
     setHamburgerOrder: React.Dispatch<React.SetStateAction<any[]>>;
   };
 
-  const [burgers, setHamburgers] = useState<HamburgerList>([]);
+  const [burgers, setHamburgers] = useState<listaHamburger>([]);
   const [productValue, setProductValue] = useState<number>(0);
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -64,7 +64,7 @@ export default function Hamburgers() {
     <section className="container mx-auto h-screen">
       <h1 className="text-4xl text-gray-700 font-bold mb-6">Hamburgers</h1>
       <div className="flex gap-4">
-        {burgers.map((hamburger: Hamburger) => (
+        {burgers.map((hamburger: hamburgers) => (
           <ProductCard key={hamburger.id}>
             <ProductCardHeader>
               <ProductCardImage
