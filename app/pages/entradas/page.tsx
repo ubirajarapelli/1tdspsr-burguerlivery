@@ -34,7 +34,7 @@ export default function Appetizers() {
       return console.log("nao mandou nada")
     }
 
-    const selectedApperizer = appetizers.find(
+    const selectedApperizer = appetizers.filter(
       (appetizer) => appetizer.id === id
     )
 
