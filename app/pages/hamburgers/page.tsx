@@ -71,7 +71,7 @@ export default function Hamburgers() {
       <ProductCard key={hamburger.id}>
         <ProductCardHeader>
           <ProductCardImage
-            src={hamburger.image[0]}
+            src={hamburger.image[0]} // sem isso as imagens nao estão aparecendo
             alt={hamburger.title}
             width={120}
             height={120}
