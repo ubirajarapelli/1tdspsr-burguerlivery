@@ -32,7 +32,7 @@ export default function Sobremesa() {
 
   const handleClick = (id: number) => {
     if (productValue === 0) {
-      return console.log("nao aqui em sobremesa")
+      return console.log("nada aqui em sobremesa")
     }
 
     const escolherSobremesa = sobremesas.filter((sobremesa) => sobremesa.id === id)
@@ -67,7 +67,7 @@ export default function Sobremesa() {
       <h1 className="text-4xl text-gray-700 font-bold mb-6">sobremesa</h1>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-4">
         {sobremesas.map((sobremesa: sobremesas) => (
-          <ProductCard key={`${sobremesa.id}-${sobremesa.values}`}>
+          <ProductCard key={`${sobremesa.id}-${sobremesa.value}`}>
             <ProductCardHeader>
               <ProductCardImage
                 src={sobremesa.image}
