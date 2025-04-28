@@ -13,14 +13,14 @@ import {
   ProductCardTitle,
   ProductRadioButtom,
 } from "@/app/components";
-import { Dessert, DessertList } from "@/app/types/beverage";
+import { Dessert, DessertList } from "@/app/types/dessert";
 
 export default function Desserts() {
   const baseURL = "https://burgerlivery-api.vercel.app";
 
-  const { beverageOrder, setDessertOrder } = useContext<unknown>(OrderContext);
+  const { dessertOrder, setDessertOrder } = useContext<unknown>(OrderContext);
 
-  const [beverages, setDesserts] = useState<DessertList>([]);
+  const [desserts, setDesserts] = useState<DessertList>([]);
   const [productValue, setProductValue] = useState<number>(0);
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -34,7 +34,7 @@ export default function Desserts() {
       return;
     }
 
-    const selectedDessert = beverages.find((beverage) => beverage.id === id);
+    const selectedDessert = desserts.find((dessert) => dessert.id === id);
 
     const sendToCart = {
       id: selectedDessert?.id,
@@ -43,50 +43,50 @@ export default function Desserts() {
       value: productValue,
     };
 
-    setDessertOrder([...beverageOrder, sendToCart]);
+    setDessertOrder([...dessertOrder, sendToCart]);
     setProductValue(0);
   };
 
   const getDesserts = async () => {
     try {
-      const response = await axios.get(`${baseURL}/beverages`);
+      const response = await axios.get(`${baseURL}/desserts`);
       setDesserts(response.data);
     } catch (error) {
-      console.error("Error fetching beverages:", error);
+      console.error("Error fetching desserts:", error);
     }
   };
 
   useEffect(() => {
-    getBeverages();
+    getDesserts();
   }, []);
 
   return (
     <section className="container mx-auto h-screen">
       <h1 className="text-4xl text-gray-700 font-bold mb-6">Entradas</h1>
       <div className="flex gap-4">
-        {beverages.map((beverage: Beverage) => (
-          <ProductCard key={beverage.id}>
+        {desserts.map((dessert: Dessert) => (
+          <ProductCard key={dessert.id}>
             <ProductCardHeader>
               <ProductCardImage
-                src={beverage.image}
-                alt={beverage.title}
+                src={dessert.image}
+                alt={dessert.title}
                 width={120}
                 height={120}
               />
-              <ProductCardTitle>{beverage.title}</ProductCardTitle>
+              <ProductCardTitle>{dessert.title}</ProductCardTitle>
               <ProductCardDescription>
-                {beverage.description}
+                {dessert.description}
               </ProductCardDescription>
             </ProductCardHeader>
             <ProductCardAction>
               <ProductRadioButtom
-                id={`${beverage.id}-${beverage.value}`}
-                name={beverage.title}
-                label={beverage.description}
+                id={`${dessert.id}-${dessert.value}`}
+                name={dessert.title}
+                label={dessert.description}
                 onChange={handleChange}
-                value={beverage.value}
+                value={dessert.value}
               />
-              <FormButton onClick={() => handleClick(beverage.id)}>
+              <FormButton onClick={() => handleClick(dessert.id)}>
                 Adicionar
               </FormButton>
             </ProductCardAction>
