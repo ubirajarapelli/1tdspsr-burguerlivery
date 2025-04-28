@@ -36,6 +36,8 @@ export default function Hamburgers() {
       (hamburger) => hamburger.id === id
     );
 
+    if (!selectedHamburger) return;
+
     const sendToCart = {
       id: selectedHamburger?.id,
       title: selectedHamburger?.title,
