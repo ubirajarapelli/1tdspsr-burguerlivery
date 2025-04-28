@@ -1,12 +1,12 @@
-export type Hamburger = {
-  id: number;
-  image: string[];
-  title: string;
-  description: string;
+export type hamburgers = {
+  id: number
+  image: string
+  title: string
+  description: string
   values: {
-    single: number;
-    combo: number | null;
-  };
-};
+      single: number
+      combo: number
+  }
+}
 
-export type HamburgerList = Hamburger[];
+export type listaHamburger = hamburgers[]
