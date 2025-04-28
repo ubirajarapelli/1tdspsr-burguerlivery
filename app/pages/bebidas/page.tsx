@@ -82,31 +82,23 @@ export default function Beverages() {
               </ProductCardDescription>
             </ProductCardHeader>
             <ProductCardAction>
-              {beverages.values.large ? (
+              {beverages.value? (
                 <>
                   <ProductRadioButtom
-                    id={`${beverages.id}-${beverages.values.small}`}
-                    label="Pequeno"
+                    id={`${beverages.id}-${beverages.value}`}
+                    label="Valor"
                     name={beverages.title}
                     onChange={handleChange}
-                    value={beverages.values.small}
-                  />
-
-                  <ProductRadioButtom
-                    id={`${beverages.id}-${beverages.values.large}`}
-                    label="Grande"
-                    name={beverages.title}
-                    onChange={handleChange}
-                    value={beverages.values.large}
+                    value={beverages.value}
                   />
                 </>
               ) : (
                 <ProductRadioButtom
-                  id={`${beverages.id}-${beverages.values.small}`}
+                  id={`${beverages.id}-${beverages.value}`}
                   name={beverages.title}
                   label="10 unidades"
                   onChange={handleChange}
-                  value={beverages.values.small}
+                  value={beverages.value}
                 />
               )}
               <FormButton onClick={() => handleClick(beverages.id)}>

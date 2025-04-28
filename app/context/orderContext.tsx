@@ -10,8 +10,10 @@ const OrderContext = createContext<unknown>({});
 // Provedor de contexto
 // O Provedor de contexto é um componente que envolve a aplicação e fornece o contexto para todos os componentes filhos
 export const OrderProvider = ({ children }: OrderProviderProps) => {
+  const [beveragesOrder, setBeveragesOrder] = useState<number[]>([]);
   const [appetizerOrder, setAppetizerOrder] = useState<number[]>([]);
   const [hamburgerOrder, setHamburgerOrder] = useState<number[]>([]);
+  const [dessertsOrder, setDessertsOrder] = useState<number[]>([]);
   const [totalItems, setSetTotalItems] = useState<number>(0);
 
   useEffect(() => {
@@ -21,6 +23,10 @@ export const OrderProvider = ({ children }: OrderProviderProps) => {
   return (
     <OrderContext.Provider
       value={{
+        dessertsOrder,
+        setDessertsOrder,
+        beveragesOrder,
+        setBeveragesOrder,
         appetizerOrder,
         setAppetizerOrder,
         hamburgerOrder,
