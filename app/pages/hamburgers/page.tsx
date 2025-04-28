@@ -32,7 +32,7 @@ export default function Hamburgers() {
 
   const handleClick = (id: number) => {
     if (productValue === 0) {
-      // alert("Selecione um valor")
+      alert("Por gentileza, selecione um valor")
       return 
     }
 

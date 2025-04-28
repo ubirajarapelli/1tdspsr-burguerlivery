@@ -13,15 +13,15 @@ import {
   ProductCardTitle,
   ProductRadioButtom,
 } from "@/app/components"
-import { Desserts, dessertsList } from "@/app/types/desserts"
+import { beverages_desserts, beverages_dessertsList } from "@/app/types/beverages-desserts"
 
 
-export default function desserts() {
+export default function Desserts() {
   const baseURL = "https://burgerlivery-api.vercel.app"
 
   const { dessertsOrder, setDessertsOrder }:any = useContext<unknown>(OrderContext)
   const [ productValue, setProductValue ] = useState<number>(0)
-  const [ desserts, setdesserts ] = useState<dessertsList>([])
+  const [ desserts, setdesserts ] = useState<beverages_dessertsList>([])
 
 
 
@@ -32,7 +32,7 @@ export default function desserts() {
 
   const handleClick = (id: number) => {
     if (productValue === 0) {
-      // alert("Selecione um valor")
+      alert("Por gentileza, selecione um valor")
       return 
     }
 
@@ -68,7 +68,7 @@ export default function desserts() {
         <section className="container mx-auto h-screen">
           <h1 className="text-4xl text-gray-700 font-bold mb-6">Hamburguers</h1>
           <div className="flex gap-4">
-            {desserts.map((desserts: Desserts) => (
+            {desserts.map((desserts: beverages_desserts) => (
               <ProductCard key={desserts.id}>
                 <ProductCardHeader>
                   <ProductCardImage
