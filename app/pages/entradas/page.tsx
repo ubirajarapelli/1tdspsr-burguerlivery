@@ -18,7 +18,7 @@ import { Appetizer, AppetizerList } from "@/app/types/appetizer"
 export default function Appetizers() {
   const baseURL = "https://burgerlivery-api.vercel.app"
 
-  const { appetizerOrder, setAppetizerOrder } =
+  const { appetizerOrder, setAppetizerOrder }:any =
     useContext<unknown>(OrderContext)
 
   const [appetizers, setAppetizers] = useState<AppetizerList>([])
