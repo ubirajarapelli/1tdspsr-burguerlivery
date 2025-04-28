@@ -65,7 +65,7 @@ export default function Desserts() {
 
   return (
     <section className="container mx-auto h-screen">
-      <h1 className="text-4xl text-gray-700 font-bold mb-6">Entradas</h1>
+      <h1 className="text-4xl text-gray-700 font-bold mb-6">Sobremesas</h1>
       <div className="flex gap-4">
         {desserts.map((desserts: Desserts) => (
           <ProductCard key={desserts.id}>

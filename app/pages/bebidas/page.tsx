@@ -65,7 +65,7 @@ export default function Beverages() {
 
   return (
     <section className="container mx-auto h-screen">
-      <h1 className="text-4xl text-gray-700 font-bold mb-6">Entradas</h1>
+      <h1 className="text-4xl text-gray-700 font-bold mb-6">Bebidas</h1>
       <div className="flex gap-4">
         {beverages.map((beverages: Beverages) => (
           <ProductCard key={beverages.id}>
