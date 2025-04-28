@@ -16,21 +16,8 @@ export const OrderProvider = ({ children }: OrderProviderProps) => {
   const [dessertsOrder, setDessertsOrder] = useState<number[]>([])
   const [totalItems, setSetTotalItems] = useState<number>(0)
 
-  useEffect(() => {
-    setSetTotalItems(appetizerOrder.length)
-  }, [appetizerOrder])
-
-  useEffect(() => {
-    setSetTotalItems(hamburgerOrder.length)
-  }, [hamburgerOrder])
-
-  useEffect(()=> {
-    setSetTotalItems(beveragesOrder.length)
-  }, [beveragesOrder])
-
-  useEffect(()=> {
-    setSetTotalItems(dessertsOrder.length)
-  }, [dessertsOrder])
+  useEffect(() => {const total = appetizerOrder.length + dessertsOrder.length + beveragesOrder.length + hamburgerOrder.length
+    setSetTotalItems(total)}, [appetizerOrder, hamburgerOrder, dessertsOrder, beveragesOrder])
 
   return (
     <OrderContext.Provider
