@@ -1,22 +1,36 @@
-"use client";
-import { createContext, useEffect, useState } from "react";
+"use client"
+import { createContext, useEffect, useState } from "react"
 
 interface OrderProviderProps {
-  children: React.ReactNode;
+  children: React.ReactNode
 }
 
-const OrderContext = createContext<unknown>({});
+const OrderContext = createContext<unknown>({})
 
 // Provedor de contexto
 // O Provedor de contexto é um componente que envolve a aplicação e fornece o contexto para todos os componentes filhos
 export const OrderProvider = ({ children }: OrderProviderProps) => {
-  const [appetizerOrder, setAppetizerOrder] = useState<number[]>([]);
-  const [hamburgerOrder, setHamburgerOrder] = useState<number[]>([]);
-  const [totalItems, setSetTotalItems] = useState<number>(0);
+  const [appetizerOrder, setAppetizerOrder] = useState<number[]>([])
+  const [hamburgerOrder, setHamburgerOrder] = useState<number[]>([])
+  const [BebidasOrder, setBebidassOrder] =  useState<number[]>([])
+  const [sobremesasOrder, setSobremesasOrder] = useState<number[]>([])
+  const [totalItems, setSetTotalItems] = useState<number>(0)
 
   useEffect(() => {
-    setSetTotalItems(appetizerOrder.length + hamburgerOrder.length);
-  }, [appetizerOrder, hamburgerOrder]);
+    setSetTotalItems(appetizerOrder.length)
+  }, [appetizerOrder])
+
+  useEffect(() => {
+    setSetTotalItems(hamburgerOrder.length)
+  }, [hamburgerOrder])
+
+  useEffect(()=> {
+    setSetTotalItems(BebidasOrder.length)
+  }, [BebidasOrder])
+
+  useEffect(()=> {
+    setSetTotalItems(sobremesasOrder.length)
+  }, [sobremesasOrder])
 
   return (
     <OrderContext.Provider
@@ -25,13 +39,17 @@ export const OrderProvider = ({ children }: OrderProviderProps) => {
         setAppetizerOrder,
         hamburgerOrder,
         setHamburgerOrder,
+        BebidasOrder,
+        setBebidassOrder,
+        sobremesasOrder,
+        setSobremesasOrder,
         totalItems,
         setSetTotalItems,
       }}
     >
       {children}
     </OrderContext.Provider>
-  );
-};
+  )
+}
 
-export default OrderContext;
+export default OrderContext
