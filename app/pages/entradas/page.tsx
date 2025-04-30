@@ -2,7 +2,7 @@
 
 import { useContext, useEffect, useState } from "react"
 import axios from "axios"
-import OrderContext from "@/app/context/orderContext"
+import OrderContext, { OrderProviderProps } from "@/app/context/orderContext"
 import {
   FormButton,
   ProductCard,
@@ -19,7 +19,7 @@ export default function Appetizers() {
   const baseURL = "https://burgerlivery-api.vercel.app"
 
   const { appetizerOrder, setAppetizerOrder } =
-    useContext<unknown>(OrderContext)
+    useContext<OrderProviderProps>(OrderContext)
 
   const [appetizers, setAppetizers] = useState<AppetizerList>([])
   const [productValue, setProductValue] = useState<number>(0)
