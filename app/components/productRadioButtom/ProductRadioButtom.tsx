@@ -1,3 +1,5 @@
+import { formatCurrency } from "@/app/utils"
+
 interface ProductRadioButtomProps {
   label: string
   id: string
@@ -13,12 +15,6 @@ export const ProductRadioButtom = ({
   value,
   onChange,
 }: ProductRadioButtomProps) => {
-  const formatCurrency = (value: number) => {
-    return value.toLocaleString("pt-BR", {
-      style: "currency",
-      currency: "BRL",
-    })
-  }
   return (
     <div className="flex flex-row-reverse items-center justify-between p-2 bg-gray-100 rounded-lg text-gray-700 mb-2">
       <input

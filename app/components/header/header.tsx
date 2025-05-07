@@ -5,6 +5,7 @@ import { Logo } from "../logo/Logo"
 import { MenuItem } from "../menuItem/Menuitem"
 import OrderContext, { OrderProviderProps } from "@/app/context/orderContext"
 import { useContext } from "react"
+import { ShoppingBasket } from "lucide-react"
 
 export const Header = () => {
   const router = useRouter()
@@ -50,7 +51,12 @@ export const Header = () => {
                 </Link>
               </li>
             )}
-            <MenuItem link="">{totalItems}</MenuItem>
+            <MenuItem link="/resumo">
+              <span className="flex items-center gap-1">
+                <ShoppingBasket />
+                {totalItems}
+              </span>
+            </MenuItem>
           </ul>
         </nav>
       </div>
