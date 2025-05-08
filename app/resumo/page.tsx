@@ -6,7 +6,7 @@ import { formatCurrency } from "../utils"
 import { Trash2 } from "lucide-react"
 
 export default function Resumo() {
-  const { totalItems, appetizerOrder, setAppetizerOrder } =
+  const { totalValue, totalItems, appetizerOrder, setAppetizerOrder } =
     useContext<OrderProviderProps>(OrderContext)
 
   const handleDelete = (id: number) => {
@@ -49,6 +49,7 @@ export default function Resumo() {
           </div>
         ))}
       </div>
+      <p>{formatCurrency(totalValue)}</p>
     </section>
   )
 }

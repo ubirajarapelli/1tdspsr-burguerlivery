@@ -1,5 +1,5 @@
 "use client"
-import { createContext, useEffect, useState } from "react"
+import { createContext, useEffect, useMemo, useState } from "react"
 
 interface AppetizerOrderProps {
   id: number
@@ -14,6 +14,7 @@ export interface OrderProviderProps {
   setAppetizerOrder: React.Dispatch<React.SetStateAction<AppetizerOrderProps[]>>
   totalItems: number
   setSetTotalItems: React.Dispatch<React.SetStateAction<number>>
+  totalValue: number
 }
 
 const OrderContext = createContext<OrderProviderProps | undefined>(undefined)
@@ -27,14 +28,39 @@ export const OrderProvider = ({ children }: OrderProviderProps) => {
   const [hamburgerOrder, setHamburgerOrder] = useState<number[]>([])
 
   const [totalItems, setSetTotalItems] = useState<number>(0)
+  // const [totalValue, setTotalValue] = useState<number>(0)
 
   useEffect(() => {
     setSetTotalItems(appetizerOrder.length)
   }, [appetizerOrder])
 
+  // useEffect(() => {
+  //   const total = appetizerOrder.reduce(
+  //     (soma, appetizer) => soma + appetizer.value,
+  //     0
+  //   )
+  //   setTotalValue(total)
+  // }, [appetizerOrder])
+
+  // const totalValue = useMemo(() => {
+  //   const total = appetizerOrder.reduce(
+  //     (soma, appetizer) => soma + appetizer.value,
+  //     0
+  //   )
+  //   return total
+  // }, [appetizerOrder])
+
+  const totalValue = useMemo(() => {
+    const sumValues = (items: any) =>
+      items.reduce((sum, item) => sum + item.value, 0)
+
+    return sumValues(appetizerOrder) + sumValues(hamburgerOrder)
+  }, [appetizerOrder, hamburgerOrder])
+
   return (
     <OrderContext.Provider
       value={{
+        totalValue,
         appetizerOrder,
         setAppetizerOrder,
         hamburgerOrder,
