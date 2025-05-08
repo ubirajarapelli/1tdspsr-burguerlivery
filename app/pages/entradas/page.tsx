@@ -18,8 +18,9 @@ import { Appetizer, AppetizerList } from "@/app/types/appetizer"
 export default function Appetizers() {
   const baseURL = "https://burgerlivery-api.vercel.app"
 
-  const { appetizerOrder, setAppetizerOrder } =
-    useContext<OrderProviderProps>(OrderContext)
+  const { appetizerOrder, setAppetizerOrder } = useContext(
+    OrderContext
+  ) as OrderProviderProps
 
   const [appetizers, setAppetizers] = useState<AppetizerList>([])
   const [productValue, setProductValue] = useState<number>(0)
@@ -31,13 +32,12 @@ export default function Appetizers() {
 
   const handleClick = (id: number) => {
     if (productValue === 0) {
-      // alert("Selecione um valor")
       return
     }
 
     const selectedApperizer = appetizers.find(
       (appetizer) => appetizer.id === id
-    )
+    ) as Appetizer
 
     const sendToCart = {
       id: selectedApperizer?.id,

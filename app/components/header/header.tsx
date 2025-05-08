@@ -4,22 +4,33 @@ import Link from "next/link"
 import { Logo } from "../logo/Logo"
 import { MenuItem } from "../menuItem/Menuitem"
 import OrderContext, { OrderProviderProps } from "@/app/context/orderContext"
-import { useContext } from "react"
+import { useContext, useEffect, useState } from "react"
 import { LogOut, ShoppingBasket } from "lucide-react"
 
 export const Header = () => {
   const router = useRouter()
-  const userToken = sessionStorage.getItem("token")
+  const [userToken, setUserToken] = useState<string | null>(null)
+  const [userData, setUserData] = useState<string | null>(null)
 
-  const userData = JSON.parse(sessionStorage.getItem("user"))
+  // const userToken = sessionStorage.getItem("token")
+  // const userData = JSON.parse(sessionStorage.getItem("user"))
 
-  const { totalItems } = useContext<OrderProviderProps>(OrderContext)
+  const { totalItems } = useContext(OrderContext) as OrderProviderProps
 
   const handleLogout = () => {
     sessionStorage.removeItem("token")
     sessionStorage.removeItem("user")
     router.push("/")
   }
+
+  useEffect(() => {
+    setUserToken(sessionStorage.getItem("token"))
+  }, [userToken])
+
+  useEffect(() => {
+    const unParsedUserData = sessionStorage.getItem("user")
+    setUserData(JSON.parse(unParsedUserData || "{}"))
+  }, [])
 
   return (
     <header>
@@ -40,7 +51,7 @@ export const Header = () => {
         <ul className="py-3 flex items-center gap-6">
           {userToken ? (
             <>
-              <li className="text-gray-700">Olá: {userData.name}</li>
+              <li className="text-gray-700">Olá: {userData?.name}</li>
               <li>
                 <Link
                   href=""

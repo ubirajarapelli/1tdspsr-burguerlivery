@@ -1,7 +1,7 @@
 "use client"
 import { createContext, useEffect, useMemo, useState } from "react"
 
-interface AppetizerOrderProps {
+interface ProductOrderProps {
   id: number
   title: string
   image: string
@@ -10,49 +10,37 @@ interface AppetizerOrderProps {
 
 export interface OrderProviderProps {
   children: React.ReactNode
-  appetizerOrder: AppetizerOrderProps[]
-  setAppetizerOrder: React.Dispatch<React.SetStateAction<AppetizerOrderProps[]>>
+  appetizerOrder: ProductOrderProps[]
+  setAppetizerOrder: React.Dispatch<React.SetStateAction<ProductOrderProps[]>>
+  hamburgerOrder: ProductOrderProps[]
+  setHamburgerOrder: React.Dispatch<React.SetStateAction<ProductOrderProps[]>>
   totalItems: number
-  setSetTotalItems: React.Dispatch<React.SetStateAction<number>>
+  setTotalItems: React.Dispatch<React.SetStateAction<number>>
   totalValue: number
 }
 
 const OrderContext = createContext<OrderProviderProps | undefined>(undefined)
 
-// Provedor de contexto
-// O Provedor de contexto é um componente que envolve a aplicação e fornece o contexto para todos os componentes filhos
 export const OrderProvider = ({ children }: OrderProviderProps) => {
-  const [appetizerOrder, setAppetizerOrder] = useState<AppetizerOrderProps[]>(
-    []
-  )
-  const [hamburgerOrder, setHamburgerOrder] = useState<number[]>([])
+  const [appetizerOrder, setAppetizerOrder] = useState<ProductOrderProps[]>([])
+  const [hamburgerOrder, setHamburgerOrder] = useState<ProductOrderProps[]>([])
 
-  const [totalItems, setSetTotalItems] = useState<number>(0)
-  // const [totalValue, setTotalValue] = useState<number>(0)
+  const [totalItems, setTotalItems] = useState<number>(0)
 
   useEffect(() => {
-    setSetTotalItems(appetizerOrder.length)
+    setTotalItems(appetizerOrder.length)
   }, [appetizerOrder])
 
-  // useEffect(() => {
-  //   const total = appetizerOrder.reduce(
-  //     (soma, appetizer) => soma + appetizer.value,
-  //     0
-  //   )
-  //   setTotalValue(total)
-  // }, [appetizerOrder])
-
-  // const totalValue = useMemo(() => {
-  //   const total = appetizerOrder.reduce(
-  //     (soma, appetizer) => soma + appetizer.value,
-  //     0
-  //   )
-  //   return total
-  // }, [appetizerOrder])
+  useEffect(() => {
+    setTotalItems(hamburgerOrder.length)
+  }, [hamburgerOrder])
 
   const totalValue = useMemo(() => {
-    const sumValues = (items: any) =>
-      items.reduce((sum, item) => sum + item.value, 0)
+    const sumValues = (items: ProductOrderProps[]) =>
+      items.reduce(
+        (sum: number, item: { value: number }) => sum + item.value,
+        0
+      )
 
     return sumValues(appetizerOrder) + sumValues(hamburgerOrder)
   }, [appetizerOrder, hamburgerOrder])
@@ -66,7 +54,7 @@ export const OrderProvider = ({ children }: OrderProviderProps) => {
         hamburgerOrder,
         setHamburgerOrder,
         totalItems,
-        setSetTotalItems,
+        setTotalItems,
       }}
     >
       {children}
