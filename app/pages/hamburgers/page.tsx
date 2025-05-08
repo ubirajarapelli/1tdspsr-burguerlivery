@@ -1,9 +1,9 @@
 "use client"
-import OrderContext from "@/app/context/orderContext"
+import OrderContext, { OrderProviderProps } from "@/app/context/orderContext"
 import { useContext } from "react"
 
 export default function Hamburgers() {
-  const { appetizerOrder } = useContext<unknown>(OrderContext)
+  const { appetizerOrder } = useContext(OrderContext) as OrderProviderProps
 
   return (
     <div className="container mx-auto h-svh">
