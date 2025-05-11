@@ -10,11 +10,8 @@ import { LogOut, ShoppingBasket } from "lucide-react"
 export const Header = () => {
   const router = useRouter()
   const [userToken, setUserToken] = useState<string | null>(null)
-  type UserData = { name: string; email: string } | null
+  type UserData = { name: string | null; email: string | null } | null
   const [userData, setUserData] = useState<UserData>(null)
-
-  // const userToken = sessionStorage.getItem("token")
-  // const userData = JSON.parse(sessionStorage.getItem("user"))
 
   const { totalItems } = useContext(OrderContext) as OrderProviderProps
 
