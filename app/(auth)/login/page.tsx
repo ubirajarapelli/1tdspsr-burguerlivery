@@ -1,6 +1,7 @@
 "use client"
-import { useRouter } from "next/navigation"
 import React, { useState } from "react"
+import axios from "axios"
+import { useRouter } from "next/navigation"
 import { FormButton, Logo } from "@/app/components"
 
 export default function Login() {
@@ -29,47 +30,25 @@ export default function Login() {
     }
 
     try {
-      const response = await fetch(`${baseURL}/user/login`, {
-        method: "POST",
-        body: JSON.stringify(params),
-        headers: {
-          "Content-Type": "application/json charset=UTF-8",
-          Accept: "application/json",
-        },
+      const response = await axios.post(`${baseURL}/user/login`, {
+        ...params,
       })
 
-      if (!response.ok) {
-        const errorMessage = await response.json()
+      const token = response.data.token
 
-        const errorData = {
-          status: response.status,
-          message: errorMessage.message,
-        }
-        const error = new Error(JSON.stringify(errorData))
-        throw error
+      const userData = {
+        name: response.data.userName,
+        email: response.data.email,
       }
 
-      // login: eliane_almeida@gmail.com.br
-      // password: Prior8756@
-
-      if (response.ok) {
-        const data = await response.json()
-        const token = data.token
-        const userData = {
-          name: data.userName,
-          email: data.email,
-        }
-        // localStorage.setItem("token", token)
-        sessionStorage.setItem("token", token)
-        sessionStorage.setItem("user", JSON.stringify(userData))
-        router.push("/pages/hamburgers")
-      }
+      sessionStorage.setItem("token", token)
+      sessionStorage.setItem("user", JSON.stringify(userData))
+      router.push("/pages/hamburgers")
     } catch (error) {
-      const errorData = JSON.parse(error.message)
       setHasError(true)
-      setErrorMessage(errorData.message)
-      // router.push("/error")
-    } finally {
+      if (axios.isAxiosError(error)) {
+        setErrorMessage(error.response?.data?.message || "Erro ao fazer login.")
+      }
     }
   }
   return (
