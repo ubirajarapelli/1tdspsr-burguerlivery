@@ -1,13 +1,13 @@
 "use client"
 import Image from "next/image"
 import { useContext } from "react"
-import OrderContext, { OrderProviderProps } from "../context/orderContext"
+import OrderContext, { OrderContextValue } from "../context/orderContext"
 import { formatCurrency } from "../utils"
 import { Trash2 } from "lucide-react"
 
 export default function Resumo() {
   const { totalValue, totalItems, appetizerOrder, setAppetizerOrder } =
-    useContext<OrderProviderProps>(OrderContext)
+    useContext(OrderContext) as OrderContextValue
 
   const handleDelete = (id: number) => {
     const newAppetizer = appetizerOrder.filter(
