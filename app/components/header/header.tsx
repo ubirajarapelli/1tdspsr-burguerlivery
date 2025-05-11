@@ -26,10 +26,10 @@ export const Header = () => {
   }, [userToken])
 
   useEffect(() => {
-    const unParsedUserData = sessionStorage.getItem("user")
-    console.log("unParsedUserData", unParsedUserData)
+    const userString = sessionStorage.getItem("user")
+    const unParsedUserData = userString ? JSON.parse(userString) : null
 
-    setUserData(unParsedUserData ? JSON.parse(unParsedUserData) : null)
+    setUserData(unParsedUserData || null)
   }, [userToken])
 
   return (
