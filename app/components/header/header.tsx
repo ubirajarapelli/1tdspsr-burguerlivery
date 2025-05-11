@@ -3,7 +3,7 @@ import { useRouter } from "next/navigation"
 import Link from "next/link"
 import { Logo } from "../logo/Logo"
 import { MenuItem } from "../menuItem/Menuitem"
-import OrderContext, { OrderProviderProps } from "@/app/context/orderContext"
+import OrderContext, { OrderContextValue } from "@/app/context/orderContext"
 import { useContext, useEffect, useState } from "react"
 import { LogOut, ShoppingBasket } from "lucide-react"
 import { UserData } from "@/app/types/userData"
@@ -14,7 +14,7 @@ export const Header = () => {
 
   const [userData, setUserData] = useState<UserData>(null)
 
-  const { totalItems } = useContext(OrderContext) as OrderProviderProps
+  const { totalItems } = useContext(OrderContext) as OrderContextValue
 
   const handleLogout = () => {
     sessionStorage.removeItem("token")
