@@ -2,7 +2,7 @@
 
 import { useContext, useEffect, useState } from "react"
 import axios from "axios"
-import OrderContext, { OrderProviderProps } from "@/app/context/orderContext"
+import OrderContext, { OrderContextValue } from "@/app/context/orderContext"
 import {
   FormButton,
   ProductCard,
@@ -20,7 +20,7 @@ export default function Appetizers() {
 
   const { appetizerOrder, setAppetizerOrder } = useContext(
     OrderContext
-  ) as OrderProviderProps
+  ) as OrderContextValue
 
   const [appetizers, setAppetizers] = useState<AppetizerList>([])
   const [productValue, setProductValue] = useState<number>(0)
