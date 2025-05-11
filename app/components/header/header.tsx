@@ -10,7 +10,8 @@ import { LogOut, ShoppingBasket } from "lucide-react"
 export const Header = () => {
   const router = useRouter()
   const [userToken, setUserToken] = useState<string | null>(null)
-  const [userData, setUserData] = useState<string | null>(null)
+  type UserData = { name?: string } | null
+  const [userData, setUserData] = useState<UserData>(null)
 
   // const userToken = sessionStorage.getItem("token")
   // const userData = JSON.parse(sessionStorage.getItem("user"))
@@ -26,10 +27,10 @@ export const Header = () => {
   useEffect(() => {
     setUserToken(sessionStorage.getItem("token"))
   }, [userToken])
-
   useEffect(() => {
     const unParsedUserData = sessionStorage.getItem("user")
-    setUserData(JSON.parse(unParsedUserData || "{}"))
+
+    setUserData(unParsedUserData ? JSON.parse(unParsedUserData) : null)
   }, [])
 
   return (
