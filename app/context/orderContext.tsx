@@ -8,8 +8,7 @@ interface ProductOrderProps {
   value: number
 }
 
-export interface OrderProviderProps {
-  children: React.ReactNode
+export interface OrderContextValue {
   appetizerOrder: ProductOrderProps[]
   setAppetizerOrder: React.Dispatch<React.SetStateAction<ProductOrderProps[]>>
   hamburgerOrder: ProductOrderProps[]
@@ -19,7 +18,11 @@ export interface OrderProviderProps {
   totalValue: number
 }
 
-const OrderContext = createContext<OrderProviderProps | undefined>(undefined)
+interface OrderProviderProps {
+  children: React.ReactNode
+}
+
+const OrderContext = createContext<OrderContextValue | undefined>(undefined)
 
 export const OrderProvider = ({ children }: OrderProviderProps) => {
   const [appetizerOrder, setAppetizerOrder] = useState<ProductOrderProps[]>([])

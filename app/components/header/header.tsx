@@ -6,11 +6,12 @@ import { MenuItem } from "../menuItem/Menuitem"
 import OrderContext, { OrderProviderProps } from "@/app/context/orderContext"
 import { useContext, useEffect, useState } from "react"
 import { LogOut, ShoppingBasket } from "lucide-react"
+import { UserData } from "@/app/types/userData"
 
 export const Header = () => {
   const router = useRouter()
   const [userToken, setUserToken] = useState<string | null>(null)
-  type UserData = { name: string | null; email: string | null } | null
+
   const [userData, setUserData] = useState<UserData>(null)
 
   const { totalItems } = useContext(OrderContext) as OrderProviderProps
