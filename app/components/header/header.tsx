@@ -54,13 +54,12 @@ export const Header = () => {
             <>
               <li className="text-gray-700">Olá: {userData?.name}</li>
               <li>
-                <Link
-                  href=""
+                <span
                   className="cursor-pointer text-gray-700 hover:text-amber-600"
                   onClick={handleLogout}
                 >
                   <LogOut />
-                </Link>
+                </span>
               </li>
             </>
           ) : (
