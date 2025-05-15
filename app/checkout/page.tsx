@@ -1,19 +1,77 @@
-"use client"; // <-- Coloque isso no topo, importante para componentes que usam hooks de navegação
-
+"use client";
+import { useContext, useEffect, useLayoutEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { Logo } from "../components";
-import { useRouter } from "next/navigation";
-import { useEffect } from "react";
+import axios from "axios";
+import { PaymentOptionsData } from "../types/paymentOptions";
+import { formatCurrency } from "../utils/formatCurrency";
+import OrderContext, { OrderContextValue } from "../context/orderContext";
 
 export default function Checkout() {
+  const baseURL = process.env.NEXT_PUBLIC_API_URL;
+
   const router = useRouter();
 
-  useEffect(() => {
-    const userToken = sessionStorage.getItem("userToken");
-    if (!userToken) {
-      router.push("/");
+  const { totalValue, totalItems } = useContext(
+    OrderContext
+  ) as OrderContextValue;
+
+  const [userToken, setUserToken] = useState<string | null>(null);
+
+  const [paymentOptions, setPaymentOptions] = useState<PaymentOptionsData[]>(
+    []
+  );
+
+  const frete = 7.9;
+
+  const sumValues = (firstValue: number, lastValue: number) =>
+    firstValue + lastValue;
+
+  const getPaymentOptions = async () => {
+    try {
+      const response = await axios(`${baseURL}/payment/options`);
+      setPaymentOptions(response.data);
+    } catch (error) {
+      console.error("Error fetching payment options:", error);
     }
-  }, [router]);
+  };
+
+  const postCreateOrder = async () => {
+    const params = {
+      items: [
+        {
+          title: "string",
+          value: 1,
+        },
+      ],
+      paymentOption: 1,
+    };
+    try {
+      const response = await axios.post(`/${baseURL}/order/create-order`, {
+        body: params,
+        headers: {
+          Authorization: `Bearer ${userToken}`,
+        },
+      });
+    } catch (error) {
+      console.error("Error creating order:", error);
+    }
+  };
+
+  useLayoutEffect(() => {
+    const userToken = sessionStorage.getItem("token");
+    setUserToken(userToken);
+
+    // if (userToken === null) {
+    if (!userToken) {
+      router.push("/login");
+    }
+  }, []);
+
+  useEffect(() => {
+    getPaymentOptions();
+  }, []);
 
   return (
     <main className="bg-gray-200 h-screen">
@@ -31,6 +89,53 @@ export default function Checkout() {
                 Endereço de entrega
               </h2>
             </div>
+          </div>
+
+          <div className="w-1/3 p-6 bg-gray-50 border-gray-500 rounded-lg shadow-xs">
+            <h2 className="text-xl text-gray-700 font-bold mb-2">
+              Formas de pagamento
+            </h2>
+            <label
+              htmlFor="payment"
+              className="block text-gray-700 text-sm font-bold mb-4"
+            >
+              Escolha uma forma de pagamento
+            </label>
+            <select
+              name="payment"
+              id="payment"
+              className="text-gray-700 leading-tight rounded border w-full py-2 px-4"
+            >
+              <option value="" selected disabled>
+                Selecione uma forma de pagamento
+              </option>
+              {paymentOptions.map((payment) => (
+                <option key={payment.id} value={payment.value}>
+                  {payment.text}
+                </option>
+              ))}
+            </select>
+          </div>
+          <div className="w-1/3 p-6 bg-gray-50 border-gray-500 rounded-lg shadow-xs">
+            <h2 className="text-xl text-gray-700 font-bold mb-2">
+              Total a pagar
+            </h2>
+            <ul className="text-xl text-gray-700 font-bold mb-2">
+              Subtotal:
+              <span className="font-bold">
+                {totalItems} - {formatCurrency(totalValue)}
+              </span>
+            </ul>
+            <ul className="text-xl text-gray-700 font-bold mb-2">
+              Frete:
+              <span className="font-bold">{formatCurrency(frete)}</span>
+            </ul>
+            <ul className="text-xl text-gray-700 font-bold mb-2">
+              Valor total
+              <span className="font-bold">
+                {formatCurrency(sumValues(totalValue, frete))}
+              </span>
+            </ul>
           </div>
         </div>
         <div className="flex justify-end mt-6">
