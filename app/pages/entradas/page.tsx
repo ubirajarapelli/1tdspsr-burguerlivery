@@ -16,7 +16,7 @@ import {
 import { Appetizer, AppetizerList } from "@/app/types/appetizer"
 
 export default function Appetizers() {
-  const baseURL = "https://burgerlivery-api.vercel.app"
+  const baseURL = process.env.NEXT_PUBLIC_API_URL
 
   const { appetizerOrder, setAppetizerOrder } = useContext(
     OrderContext
