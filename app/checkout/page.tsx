@@ -1,7 +1,20 @@
-import Link from "next/link"
-import { Logo } from "../components"
+"use client"; // <-- Coloque isso no topo, importante para componentes que usam hooks de navegação
+
+import Link from "next/link";
+import { Logo } from "../components";
+import { useRouter } from "next/navigation";
+import { useEffect } from "react";
 
 export default function Checkout() {
+  const router = useRouter();
+
+  useEffect(() => {
+    const userToken = sessionStorage.getItem("userToken");
+    if (!userToken) {
+      router.push("/");
+    }
+  }, [router]);
+
   return (
     <main className="bg-gray-200 h-screen">
       <section className="container mx-auto">
@@ -30,5 +43,5 @@ export default function Checkout() {
         </div>
       </section>
     </main>
-  )
+  );
 }
