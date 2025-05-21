@@ -1,6 +1,6 @@
 "use client"
 import { useRouter } from "next/navigation"
-import { Footer, Logo } from "../components"
+import { Logo } from "../components"
 import { LogOut } from "lucide-react"
 import { useEffect, useState } from "react"
 import { UserData } from "../types/userData"
