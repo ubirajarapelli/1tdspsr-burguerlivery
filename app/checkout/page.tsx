@@ -1,7 +1,12 @@
 "use client"
-import { useContext, useEffect, useLayoutEffect, useState } from "react"
+import {
+  ChangeEvent,
+  useContext,
+  useEffect,
+  useLayoutEffect,
+  useState,
+} from "react"
 import { useRouter } from "next/navigation"
-import Link from "next/link"
 import { Logo } from "../components"
 import axios from "axios"
 import { PaymentOptionsData } from "../types/paymentOptions"
@@ -11,7 +16,7 @@ import { formatCurrency } from "../utils"
 export default function Checkout() {
   const router = useRouter()
 
-  const { totalValue, totalItems } = useContext(
+  const { totalValue, totalItems, appetizerOrder } = useContext(
     OrderContext
   ) as OrderContextValue
 
@@ -21,12 +26,20 @@ export default function Checkout() {
   >([])
 
   const [userToken, setUserToken] = useState<string | null>(null)
+  const [selectedPaymentOption, setSelectedPaymentOption] = useState<
+    number | null
+  >(0)
 
   const baseURL = process.env.NEXT_PUBLIC_API_URL
   const frete = 7.9
 
   const sumValues = (firstValue: number, lastValue: number) => {
     return firstValue + lastValue
+  }
+
+  const handleSelectPayment = (event: ChangeEvent<HTMLSelectElement>) => {
+    const { value } = event.target
+    setSelectedPaymentOption(Number(value))
   }
 
   const getPaymentOptions = async () => {
@@ -40,22 +53,24 @@ export default function Checkout() {
 
   const postCreateOrder = async () => {
     const params = {
-      items: [
-        {
-          title: "string",
-          value: 1,
-        },
-      ],
-      paymentOption: 1,
+      items: appetizerOrder.map(({ title, value }) => ({ title, value })),
+      paymentOption: selectedPaymentOption,
     }
 
     try {
-      const response = await axios.post(`${baseURL}/order/create-order`, {
-        body: params,
-        headers: {
-          Authorization: `Bearer ${userToken}`,
-        },
-      })
+      const response = await axios.post(
+        `${baseURL}/order/create-order`,
+        JSON.stringify(params),
+        {
+          headers: {
+            authorization: `Bearer ${userToken}`,
+          },
+        }
+      )
+
+      if (response) {
+        router.push("/pedido/finalizado")
+      }
     } catch (error) {
       console.error("Error creating order:", error)
     }
@@ -111,9 +126,10 @@ export default function Checkout() {
               <select
                 name="payment"
                 id="payment"
+                onChange={handleSelectPayment}
                 className="text-gray-700 leading-tight rounded border w-full py-2 px-4"
               >
-                <option value="" disabled selected>
+                <option value={0} disabled selected>
                   Selecione
                 </option>
                 {paymentOptions.map((payment) => (
@@ -150,12 +166,12 @@ export default function Checkout() {
           </div>
         </div>
         <div className="flex justify-end mt-6">
-          <Link
-            href="/"
+          <button
+            onClick={postCreateOrder}
             className="py-2 px-6 rounded-full bg-amber-300 text-amber-600 font-semibold border border-amber-400"
           >
             Fazer pedido
-          </Link>
+          </button>
         </div>
       </section>
     </main>
