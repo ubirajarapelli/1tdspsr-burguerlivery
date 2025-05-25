@@ -1,177 +1,148 @@
 "use client"
-import {
-  ChangeEvent,
-  useContext,
-  useEffect,
-  useLayoutEffect,
-  useState,
-} from "react"
-import { useRouter } from "next/navigation"
-import { Logo } from "../components"
-import axios from "axios"
-import { PaymentOptionsData } from "../types/paymentOptions"
-import OrderContext, { OrderContextValue } from "../context/orderContext"
-import { formatCurrency } from "../utils"
-
-export default function Checkout() {
-  const router = useRouter()
-
-  const { totalValue, totalItems, appetizerOrder } = useContext(
-    OrderContext
-  ) as OrderContextValue
-
-  // const [paymentOptions, setPaymentOptions] = useState<PaymentOptionsData[]>([])
-  const [paymentOptions, setPaymentOptions] = useState<
-    Array<PaymentOptionsData>
-  >([])
-
-  const [userToken, setUserToken] = useState<string | null>(null)
-  const [selectedPaymentOption, setSelectedPaymentOption] = useState<
-    number | null
-  >(0)
-
-  const baseURL = process.env.NEXT_PUBLIC_API_URL
-  const frete = 7.9
-
-  const sumValues = (firstValue: number, lastValue: number) => {
-    return firstValue + lastValue
+import { useEffect, useState } from "react"
+import { useSearchParams } from "next/navigation"
+import { Logo } from "@/app/components"
+ 
+interface OrderComplete {
+  orderNumber: string
+  createdAt: string
+  address: {
+    cep: string
+    street: string
+    neighborhood: string
+    city: string
+    number: string
+    complement?: string
   }
-
-  const handleSelectPayment = (event: ChangeEvent<HTMLSelectElement>) => {
-    const { value } = event.target
-    setSelectedPaymentOption(Number(value))
+  paymentOption?: {
+    id: string
+    value: number
+    text: string
   }
-
-  const getPaymentOptions = async () => {
-    try {
-      const response = await axios(`${baseURL}/payment/options`)
-      setPaymentOptions(response.data)
-    } catch (error) {
-      console.error("Error fetching payment options:", error)
-    }
-  }
-
-  const postCreateOrder = async () => {
-    const params = {
-      items: appetizerOrder.map(({ title, value }) => ({ title, value })),
-      paymentOption: selectedPaymentOption,
-    }
-
-    try {
-      const response = await axios.post(
-        `${baseURL}/order/create-order`,
-        JSON.stringify(params),
-        {
-          headers: {
-            authorization: `Bearer ${userToken}`,
-          },
-        }
-      )
-
-      if (response) {
-        router.push("/pedido/finalizado")
-      }
-    } catch (error) {
-      console.error("Error creating order:", error)
-    }
-  }
-
-  useLayoutEffect(() => {
-    const token = sessionStorage.getItem("token")
-    setUserToken(token)
-
-    // if (token === null) {
-    if (!token) {
-      router.push("/login")
-    }
-  }, [])
-
-  // useEffect(() => {
-  //   if (totalItems === 0) {
-  //     router.push("/pages/hamburgers")
-  //   }
-  // }, [])
-
+  items: { title: string; value: number }[]
+  totalValue: number
+  frete: number
+}
+ 
+export default function PedidoFinalizado() {
+  const searchParams = useSearchParams()
+ 
+  const orderNumber = searchParams.get("orderNumber")
+  const createdAt = searchParams.get("createdAt")
+ 
+  const [order, setOrder] = useState<OrderComplete | null>(null)
+ 
   useEffect(() => {
-    getPaymentOptions()
+   
+    const lastOrder = sessionStorage.getItem("lastOrder")
+    if (lastOrder) {
+      setOrder(JSON.parse(lastOrder))
+    }
   }, [])
-
+ 
+  const formattedDate = createdAt
+    ? new Date(createdAt).toLocaleString("pt-BR", {
+        day: "2-digit",
+        month: "2-digit",
+        year: "numeric",
+        hour: "2-digit",
+        minute: "2-digit",
+        second: "2-digit",
+      })
+    : null
+ 
   return (
-    <main className="bg-gray-200 h-screen">
-      <section className="container mx-auto">
+    <main className="bg-gray-200 min-h-screen">
+      <section className="container mx-auto px-4 py-8">
         <header className="py-6 flex justify-between items-center">
           <span className="flex items-center gap-1">
             <Logo />
           </span>
         </header>
-        <h1 className="text-4xl text-gray-700 font-bold mb-6">Checkout</h1>
-        <div className="min-h-96">
-          <div className="flex items-start gap-4">
-            <div className="w-1/3 p-6 bg-gray-50 border-gray-500 rounded-lg shadow-xs">
-              <h2 className="text-xl text-gray-700 font-bold mb-2">
-                Endereço de entrega
-              </h2>
-            </div>
-
-            <div className="w-1/3 p-6 bg-gray-50 border-gray-500 rounded-lg shadow-xs">
-              <h2 className="text-xl text-gray-700 font-bold mb-2">
-                Formas de pagamento
-              </h2>
-              <label
-                htmlFor="payment"
-                className="block text-gray-700 text-sm font-bold mb-4"
-              >
-                Escolha uma forma de pagamento
-              </label>
-              <select
-                name="payment"
-                id="payment"
-                onChange={handleSelectPayment}
-                className="text-gray-700 leading-tight rounded border w-full py-2 px-4"
-              >
-                <option value={0} disabled selected>
-                  Selecione
-                </option>
-                {paymentOptions.map((payment) => (
-                  <option key={payment.id} value={payment.value}>
-                    {payment.text}
-                  </option>
-                ))}
-              </select>
-            </div>
-
-            <div className="w-1/3 p-6 bg-gray-50 border-gray-500 rounded-lg shadow-xs">
-              <h2 className="text-xl text-gray-700 font-bold mb-2">
-                Total a pagar
-              </h2>
-              <ul>
-                <li className="text-gray-700 flex justify-between">
+ 
+        <h1 className="text-4xl text-gray-700 font-bold mb-6">
+          Pedido realizado com sucesso
+        </h1>
+ 
+        <div className="bg-white rounded-lg shadow-md max-w-2xl p-6 space-y-6">
+          <section>
+            <p className="text-gray-700 text-lg mb-2">
+              <span className="font-semibold">Número do pedido: </span>
+              <span className="text-amber-600">{orderNumber ?? "Não informado"}</span>
+            </p>
+            <p className="text-gray-700 text-lg">
+              <span className="font-semibold">Data e hora: </span>
+              <span className="text-amber-600">{formattedDate ?? "Não informado"}</span>
+            </p>
+          </section>
+ 
+          {order && (
+            <>
+              <section>
+                <h2 className="text-xl font-semibold text-gray-700 mb-3">Endereço de entrega</h2>
+                <p className="text-gray-700">
+                  {order.address.street}, {order.address.number}{" "}
+                  {order.address.complement && `- ${order.address.complement}`}
+                </p>
+                <p className="text-gray-700">
+                  {order.address.neighborhood} - {order.address.city}
+                </p>
+                <p className="text-gray-700">CEP: {order.address.cep}</p>
+              </section>
+ 
+              <section>
+                <h2 className="text-xl font-semibold text-gray-700 mb-3">Forma de pagamento</h2>
+                <p className="text-amber-600 font-semibold">
+                  {order.paymentOption?.text ?? "Não informado"}
+                </p>
+              </section>
+ 
+              <section>
+                <h2 className="text-xl font-semibold text-gray-700 mb-3">Itens do pedido</h2>
+                <ul className="list-disc list-inside text-gray-700">
+                  {order.items.map((item, idx) => (
+                    <li key={idx}>
+                      {item.title} -{" "}
+                      <span className="font-semibold">
+                        {item.value.toLocaleString("pt-BR", { style: "currency", currency: "BRL" })}
+                      </span>
+                    </li>
+                  ))}
+                </ul>
+              </section>
+ 
+              <section>
+                <h2 className="text-xl font-semibold text-gray-700 mb-3">Resumo do pagamento</h2>
+                <p className="text-gray-700 flex justify-between max-w-xs">
                   Subtotal:
-                  <span className="font-bold">
-                    {totalItems} items - {formatCurrency(totalValue)}
+                  <span className="font-semibold">
+                    {order.totalValue.toLocaleString("pt-BR", {
+                      style: "currency",
+                      currency: "BRL",
+                    })}
                   </span>
-                </li>
-                <li className="text-gray-700 flex justify-between">
-                  Frete
-                  <span className="font-bold">{formatCurrency(frete)}</span>
-                </li>
-                <li className="text-gray-700 flex justify-between">
-                  Valor total
-                  <span className="font-bold">
-                    {formatCurrency(sumValues(totalValue, frete))}
+                </p>
+                <p className="text-gray-700 flex justify-between max-w-xs">
+                  Frete:
+                  <span className="font-semibold">
+                    {order.frete.toLocaleString("pt-BR", {
+                      style: "currency",
+                      currency: "BRL",
+                    })}
                   </span>
-                </li>
-              </ul>
-            </div>
-          </div>
-        </div>
-        <div className="flex justify-end mt-6">
-          <button
-            onClick={postCreateOrder}
-            className="py-2 px-6 rounded-full bg-amber-300 text-amber-600 font-semibold border border-amber-400"
-          >
-            Fazer pedido
-          </button>
+                </p>
+                <p className="text-gray-700 flex justify-between max-w-xs text-lg font-bold">
+                  Total:
+                  <span className="text-amber-600">
+                    {(order.totalValue + order.frete).toLocaleString("pt-BR", {
+                      style: "currency",
+                      currency: "BRL",
+                    })}
+                  </span>
+                </p>
+              </section>
+            </>
+          )}
         </div>
       </section>
     </main>
