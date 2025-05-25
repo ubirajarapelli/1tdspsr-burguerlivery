@@ -96,6 +96,34 @@ export default function Checkout() {
     getPaymentOptions()
   }, [])
 
+  const [cep, setCep] = useState("")
+  const [numero, setNumero] = useState("")
+  const [complemento, setComplemento] = useState("")
+  const [endereco, setEndereco] = useState({
+    rua: "",
+    bairro: "",
+    cidade: ""
+})
+
+  const buscarCEP = async () => {
+    if (!cep || cep.length < 8) return alert("Digite um CEP válido")
+      try {
+      const response = await axios.get(`https://viacep.com.br/ws/${cep}/json/`)
+      const data = response.data
+
+          setEndereco({
+            rua: data.logradouro || "",
+            bairro: data.bairro || "",
+            cidade: data.localidade || ""
+          })
+        } catch (error) {
+          alert("Erro ao buscar o CEP")
+          console.error(error)
+        }
+      }
+
+
+
   return (
     <main className="bg-gray-200 h-screen">
       <section className="container mx-auto">
@@ -105,13 +133,69 @@ export default function Checkout() {
           </span>
         </header>
         <h1 className="text-4xl text-gray-700 font-bold mb-6">Checkout</h1>
+
+
         <div className="min-h-96">
           <div className="flex items-start gap-4">
-            <div className="w-1/3 p-6 bg-gray-50 border-gray-500 rounded-lg shadow-xs">
-              <h2 className="text-xl text-gray-700 font-bold mb-2">
-                Endereço de entrega
-              </h2>
+          <div className="w-1/3 p-6 bg-gray-50 border-gray-500 rounded-lg shadow-xs">
+          <h2 className="text-xl text-gray-700 font-bold mb-4">Endereço de entrega</h2>
+
+        <input
+          type="text"
+          placeholder="Digite seu CEP"
+          className="border border-gray-300 rounded p-2 w-full mb-2"
+          value={cep}
+          onChange={(e) => setCep(e.target.value)}
+        />
+
+        <button
+          className="bg-blue-600 text-white rounded px-4 py-2 mb-4 hover:bg-blue-700 transition w-full"
+          onClick={buscarCEP}
+        >
+          Buscar CEP
+        </button>
+
+        <input
+          type="text"
+          placeholder="Rua"
+          className="border border-gray-300 rounded p-2 w-full mb-2 bg-gray-100"
+          value={endereco.rua}
+          readOnly
+        />
+        <input
+          type="text"
+          placeholder="Bairro"
+          className="border border-gray-300 rounded p-2 w-full mb-2 bg-gray-100"
+          value={endereco.bairro}
+          readOnly
+        />
+        <input
+          type="text"
+          placeholder="Cidade"
+          className="border border-gray-300 rounded p-2 w-full mb-2 bg-gray-100"
+          value={endereco.cidade}
+          readOnly
+        />
+
+        <input
+          type="text"
+          placeholder="Número da residência"
+          className="border border-gray-300 rounded p-2 w-full mb-2"
+          value={numero}
+          onChange={(e) => setNumero(e.target.value)}
+        />
+        <input
+          type="text"
+          placeholder="Complemento (opcional)"
+          className="border border-gray-300 rounded p-2 w-full mb-2"
+          value={complemento}
+          onChange={(e) => setComplemento(e.target.value)}
+        />
+      </div>
+
             </div>
+
+            
 
             <div className="w-1/3 p-6 bg-gray-50 border-gray-500 rounded-lg shadow-xs">
               <h2 className="text-xl text-gray-700 font-bold mb-2">
