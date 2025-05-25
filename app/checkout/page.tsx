@@ -12,9 +12,12 @@ import axios from "axios"
 import { PaymentOptionsData } from "../types/paymentOptions"
 import OrderContext, { OrderContextValue } from "../context/orderContext"
 import { formatCurrency } from "../utils"
+import { AddressInput, initialAddress } from "../components/address/Address"
+import { Address } from "../types/address"
 
 export default function Checkout() {
   const router = useRouter()
+  const cepURL = "https://brasilapi.com.br/api/cep/v2"
 
   const { totalValue, totalItems, appetizerOrder } = useContext(
     OrderContext
@@ -25,17 +28,30 @@ export default function Checkout() {
     Array<PaymentOptionsData>
   >([])
 
+  const [address, setAddress] = useState<Address>(initialAddress)
   const [userToken, setUserToken] = useState<string | null>(null)
   const [selectedPaymentOption, setSelectedPaymentOption] = useState<
     number | null
   >(0)
-
-  const baseURL = process.env.NEXT_PUBLIC_API_URL
+  const baseURL = "https://burgerlivery-api.vercel.app"/*process.env.NEXT_PUBLIC_API_URL*/
   const frete = 7.9
 
   const sumValues = (firstValue: number, lastValue: number) => {
     return firstValue + lastValue
   }
+
+  const handleAddressChange = (event: ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = event.target
+    setAddress((prev) => ({ ...prev, [name]: value }))
+  };
+
+  const handleCepBlur = (event: ChangeEvent<HTMLInputElement>) => {
+    const rawCep = event.target.value.replace(/\D/g, "")
+    if (rawCep.length === 8) {
+      getAddress(rawCep);
+    }
+    setAddress((prev) => ({ ...prev, cep: event.target.value }))
+  };
 
   const handleSelectPayment = (event: ChangeEvent<HTMLSelectElement>) => {
     const { value } = event.target
@@ -52,9 +68,24 @@ export default function Checkout() {
   }
 
   const postCreateOrder = async () => {
+    if (
+      !address.cep ||
+      !address.street ||
+      !address.neighborhood ||
+      !address.city
+    ) {
+      alert("Por favor, preencha todos os campos obrigatórios do endereço.");
+      return;
+    }
+    if (!selectedPaymentOption) {
+      alert("Selecione uma forma de pagamento.")
+      return;
+    }
+
     const params = {
       items: appetizerOrder.map(({ title, value }) => ({ title, value })),
       paymentOption: selectedPaymentOption,
+      address: { ...address },
     }
 
     try {
@@ -68,11 +99,15 @@ export default function Checkout() {
         }
       )
 
+
+
+      
       if (response) {
         router.push("/pedido/finalizado")
       }
     } catch (error) {
       console.error("Error creating order:", error)
+      alert("Erro ao criar o pedido. Tente novamente.")
     }
   }
 
@@ -85,6 +120,20 @@ export default function Checkout() {
       router.push("/login")
     }
   }, [])
+
+  const getAddress = async (cep: string) => {
+    try {
+      const { data } = await axios.get<Address>(`${cepURL}/${cep}`)
+      setAddress((prev) => ({
+        ...prev,
+        street: data.street,
+        city: data.city,
+        neighborhood: data.neighborhood,
+      }))
+    } catch (error) {
+      console.error("Error fetching cep:", error)
+    }
+  }
 
   // useEffect(() => {
   //   if (totalItems === 0) {
@@ -111,6 +160,14 @@ export default function Checkout() {
               <h2 className="text-xl text-gray-700 font-bold mb-2">
                 Endereço de entrega
               </h2>
+              <div className="grid grid-cols-2 gap-4">
+                <AddressInput name="cep" placeholder="CEP" value={address.cep} onChange={handleAddressChange} onBlur={handleCepBlur} className="col-span-2 text-red-600" />
+                <AddressInput name="street" placeholder="Rua" value={address.street} onChange={handleAddressChange} className="col-span-2" />
+                <AddressInput name="neighborhood" placeholder="Bairro" value={address.neighborhood} onChange={handleAddressChange} className="" />
+                <AddressInput name="city" placeholder="Cidade" value={address.city} onChange={handleAddressChange} className="" />
+                <input name="number" placeholder="Número" className="text-gray-700 rounded border py-2 px-4 w-23" />
+                <input name="complement" placeholder="Complemento" className="text-gray-700 rounded border py-2 px-4" />
+              </div>
             </div>
 
             <div className="w-1/3 p-6 bg-gray-50 border-gray-500 rounded-lg shadow-xs">
