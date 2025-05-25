@@ -8,6 +8,15 @@ interface ProductOrderProps {
   value: number
 }
 
+interface AddressProps {
+  cep: string,
+  city: string,
+  neighborhood: string,
+  street: string
+  number?: string
+  complement?: string
+}
+
 export interface OrderContextValue {
   appetizerOrder: ProductOrderProps[]
   setAppetizerOrder: React.Dispatch<React.SetStateAction<ProductOrderProps[]>>
@@ -16,6 +25,11 @@ export interface OrderContextValue {
   totalItems: number
   setTotalItems: React.Dispatch<React.SetStateAction<number>>
   totalValue: number
+
+  address: AddressProps | null
+  setAddress: React.Dispatch<React.SetStateAction<AddressProps | null>>
+  selectedPaymentOption: string | null
+  setSelectedPaymentOption: React.Dispatch<React.SetStateAction<string>>
 }
 
 interface OrderProviderProps {
@@ -29,6 +43,8 @@ export const OrderProvider = ({ children }: OrderProviderProps) => {
   const [hamburgerOrder, setHamburgerOrder] = useState<ProductOrderProps[]>([])
 
   const [totalItems, setTotalItems] = useState<number>(0)
+  const [address, setAddress] = useState<AddressProps | null>(null)
+  const [selectedPaymentOption, setSelectedPaymentOption] = useState<string>("")
 
   useEffect(() => {
     setTotalItems(appetizerOrder.length)
@@ -58,6 +74,10 @@ export const OrderProvider = ({ children }: OrderProviderProps) => {
         setHamburgerOrder,
         totalItems,
         setTotalItems,
+        address,
+        setAddress,
+        selectedPaymentOption,
+        setSelectedPaymentOption
       }}
     >
       {children}
