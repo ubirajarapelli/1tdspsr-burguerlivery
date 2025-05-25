@@ -27,25 +27,19 @@ const OrderContext = createContext<OrderContextValue | undefined>(undefined)
 export const OrderProvider = ({ children }: OrderProviderProps) => {
   const [appetizerOrder, setAppetizerOrder] = useState<ProductOrderProps[]>([])
   const [hamburgerOrder, setHamburgerOrder] = useState<ProductOrderProps[]>([])
-
   const [totalItems, setTotalItems] = useState<number>(0)
 
   useEffect(() => {
-    setTotalItems(appetizerOrder.length)
-  }, [appetizerOrder])
-
-  useEffect(() => {
-    setTotalItems(hamburgerOrder.length)
-  }, [hamburgerOrder])
+    const appetizerCount = appetizerOrder.length
+    const hamburgerCount = hamburgerOrder.length
+    setTotalItems(appetizerCount + hamburgerCount)
+  }, [appetizerOrder, hamburgerOrder])
 
   const totalValue = useMemo(() => {
-    const sumValues = (items: ProductOrderProps[]) =>
-      items.reduce(
-        (sum: number, item: { value: number }) => sum + item.value,
-        0
-      )
+    const sum = (items: ProductOrderProps[]) =>
+      items.reduce((acc, item) => acc + item.value, 0)
 
-    return sumValues(appetizerOrder) + sumValues(hamburgerOrder)
+    return sum(appetizerOrder) + sum(hamburgerOrder)
   }, [appetizerOrder, hamburgerOrder])
 
   return (
@@ -66,3 +60,4 @@ export const OrderProvider = ({ children }: OrderProviderProps) => {
 }
 
 export default OrderContext
+
